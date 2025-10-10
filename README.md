@@ -4,59 +4,64 @@ Submissions for the Computer Infrastructure Module 2025/2026
 Welcome to Edward Cronin’s repository for the Computer Infrastructure module at ATU Galway. This repository contains completed assessments, including individual tasks and a comprehensive final project (to be added later), demonstrating practical applications of key infrastructure concepts.
 
 ### Overview
-This repository is organized into two main sections:
+This repository is organised into two main sections:
 
-Section 1: Problems (2025/2026) Contains four tasks assigned throughout the module, showcasing practical implementations of core Computer Infrastructure techniques.
+**Section 1: Problems (2025/2026)**  
+This section contains four tasks assigned throughout the module, showcasing practical implementations of core Computer Infrastructure techniques.
 
-Section 2: Final Project (2025/2026) Will present a capstone project integrating the skills and knowledge acquired during the course. (Coming Soon)
+**Section 2: Final Project (2025/2026)**  
+This section will present a capstone project that integrates the skills and knowledge acquired during the course. (Coming Soon)
 
-Feedback and collaboration are welcome
+Feedback and collaboration are welcome!
 
 ### Repository Contents
-Contains four completed tasks as outlined in the[2025 Computer Infrastructure Module README document](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md).
 
-project.ipynb: This file contains the completed project work as outlined in the Project Section of the [2025 Computer Infrastructure Module README document] ( TO BE COMPLETED LATER)
+- **problems.ipynb**: This file contains four completed tasks as outlined in the [2025 Computer Infrastructure Module Assessment document](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md).
 
-requirements.txt: Lists the Python packages required to run the code in this repository.
+- **project.ipynb**: This file includes the completed project work as detailed in the Project Section of the [2025 Computer Infrastructure Module README document](#) (to be completed later).
+
+- **requirements.txt**: This file lists the Python packages required to run the code in this repository.
 
 
-### Author
-Name: Edward Cronin
+### Author Information
+- **Name:** Edward Cronin  
+- **Student ID:** g00425645  
+- **Email:** g00425645@atu.ie  
+- **GitHub Profile:** [ECronin1973](https://github.com/ECronin1973)  
 
-Student ID: g00425645
+## Cloning the Repository
 
-Email: g00425645@atu.ie
-
-GitHub Profile: [ECronin1973](https://github.com/ECronin1973)
-
-## Cloning the repository
-
-1. Visit the GitHub repository at [My repository for Computer Infrastructure on GitHub](https://github.com/ECronin1973/computer_infrastructure.git).
-2. Click the "Code" button, then copy the URL for cloning.
+1. Visit the GitHub repository at [My Computer Infrastructure Repository](https://github.com/ECronin1973/computer_infrastructure.git).
+2. Click the "Code" button, then copy the URL provided for cloning.
 3. Open a terminal and run the following command to clone the repository:
    ```bash
    git clone https://github.com/ECronin1973/computer_infrastructure.git
    ```
-4. To run the code, ensure that python and Jupyter are installed.
+4. To run the code, ensure that Python and Jupyter are installed on your system.
 
 ## Code of Conduct
 
-A code of conduct governs the use of this repository and has been uploaded within the repository for ease of reference.
+This repository is governed by a code of conduct, which is available for reference within the repository.
 
 ## Installation
-To install the necessary dependencies, use the following command:
-```<bash>
+
+To install the necessary dependencies, run the following command:
+
+```bash
 pip install -r requirements.txt
 ```
 
 ## Usage
-To run the Jupyter notebooks, navigate to the directory containing the files and use the following command:
-```<bash>
+
+To run the Jupyter notebooks, navigate to the directory containing the files and execute the following command:
+
+```bash
 jupyter notebook
 ```
 
-## Dependencies 
-The project relies on several Python libraries, which are listed in the requirements.txt file. These include:
+## Dependencies
+
+This project relies on several Python libraries, which are listed in the `requirements.txt` file. These include:
 
 - yfinance
 - pandas
@@ -66,62 +71,61 @@ The project relies on several Python libraries, which are listed in the requirem
 - glob
 - TO BE UPDATED AS NECESSARY
 
-Make sure to install these dependencies to ensure the code runs smoothly.
+Ensure that you install these dependencies to guarantee smooth execution of the code.
 
 ## AI Assistance
-Some code in this repository was generated with the help of AI tools to support learning and accelerate development.
 
-# Problems 2025/2026 Computer Infrastructure Module
+Some of the code in this repository was generated with the assistance of AI tools to facilitate learning and expedite development.
 
-## Course Objective:
+# Tasks for the 2025/2026 Computer Infrastructure Module
 
-Create a notebook called problems.ipynb in the root of the repository. Complete all problems detailed in problems.md in this notebook.
+## Course Objective
+
+Create a notebook named `problems.ipynb` in the root of the repository. Complete all tasks outlined in `problems.md` within this notebook.
 
 ## Problem 1: FAANG Stock Data with yfinance
 
 ### Objective
-Use the [yfinance](https://github.com/ranaroussi/yfinance) Python package, write a function called get_data() that downloads all hourly data for the previous five days for the five FAANG stocks:
+Using the [yfinance](https://github.com/ranaroussi/yfinance) Python package, write a function called `get_data()` that downloads hourly data for the five FAANG stocks over the previous five days:
 
--   Facebook (META)
--   Apple (AAPL)
--   Amazon (AMZN)
--   Netflix (NFLX)
--   Google (GOOG)
+- Facebook (META)
+- Apple (AAPL)
+- Amazon (AMZN)
+- Netflix (NFLX)
+- Google (GOOG)
 
-The function should save the data into a folder called data in the root of your repository using a filename with the format YYYYMMDD-HHmmss.csv where YYYYMMDD is the four-digit year (e.g. 2025), followed by the two-digit month (e.g. 09 for September), followed by the two digit day, and HHmmss is hour, minutes, seconds. Create the data folder if you don't already have one.
+The function should save the data in a folder named `data` within the root of your repository. The filenames should follow the format `YYYYMMDD-HHmmss.csv`, where `YYYYMMDD` represents the four-digit year (e.g., 2025), followed by the two-digit month (e.g., 09 for September), the two-digit day, and `HHmmss` represents hours, minutes, and seconds. If the `data` folder does not already exist, the function should create it.
 
 ### Implementation Summary
 
-The get_data() function:
+The `get_data()` function should:
 
-- Downloads hourly data for each stock
-
-- Saves it to a data/ folder using the format YYYYMMDD-HHmmss.csv
-
-- Creates the folder if it doesn't exist
+- Download hourly data for each of the specified stocks
+- Save the data into the `data/` folder using the filename format `YYYYMMDD-HHmmss.csv`
+- Create the `data` folder if it does not exist
 
 
-**Further Reading Performed**
+**Further Reading Completed**
 
-1. [yfinance Documentation](https://pypi.org/project/yfinance/).  This documentation provided the foundation for interacting with Yahoo Finance’s API via Python. Specifically, it helped me to :
+1. [yfinance Documentation](https://pypi.org/project/yfinance/): This documentation provided the foundation for interacting with Yahoo Finance’s API using Python. It helped me to:
 
-- Understand the API structure: You learned how to use yf.Ticker() and ticker.history() to retrieve hourly data for FAANG stocks.
-- Specify time intervals: The docs clarified how to set interval='1h' and period='5d' to get the exact data range required.
-- Handle multiple tickers: You likely used examples showing how to loop through multiple stock symbols efficiently.
-- Export data: Guidance on converting the data to a DataFrame and saving it as .csv was essential for meeting the task’s output format requirements.
+   - Understand the API structure: I learned how to use `yf.Ticker()` and `ticker.history()` to retrieve hourly data for FAANG stocks.
+   - Specify time intervals: The documentation clarified how to set `interval='1h'` and `period='5d'` to obtain the exact data range required.
+   - Handle multiple tickers: I found examples showing how to loop through multiple stock symbols efficiently.
+   - Export data: I received guidance on converting the data to a DataFrame and saving it as a .csv file, which was essential for meeting the task’s output format requirements.
 
-2. [Pandas Documentation](https://pandas.pydata.org/pandas-docs/stable/).  This documentation was crucial for data manipulation and storage. It helped me to:
+2. [Pandas Documentation](https://pandas.pydata.org/pandas-docs/stable/): This documentation was crucial for data manipulation and storage. It helped me to:
 
-- Work with DataFrames: You learned how to create, manipulate, and export DataFrames, which is key for handling stock data.
-- Save to CSV: The docs provided methods like DataFrame.to_csv() to save the data in the required format.
-- Date and time handling: You likely used pandas functions to manage timestamps and format filenames correctly.
+   - Work with DataFrames: I learned how to create, manipulate, and export DataFrames, which is key for handling stock data.
+   - Save to CSV: The documentation provided methods such as `DataFrame.to_csv()` to save the data in the required format.
+   - Manage dates and times: I utilized Pandas functions to handle timestamps and format filenames correctly.
 
-3. [Python os Module Documentation](https://docs.python.org/3/library/os.html).  This documentation was essential for file and directory management. It helped me to:
+3. [Python os Module Documentation](https://docs.python.org/3/library/os.html): This documentation was essential for file and directory management. It helped me to:
 
-- Create directories: I learned how to use os.makedirs() to create the data/ folder if it doesn’t exist.
-- Check for existence: The docs provided methods like os.path.exists() to verify if the folder already exists before creating it.
+   - Create directories: I learned how to use `os.makedirs()` to create the 'data/' folder if it doesn’t already exist.
+   - Check for existence: The documentation provided methods like `os.path.exists()` to verify if the folder already exists before creating it.
 
-All Documents relevant to this task have been added to the references section at the end of this README.md file.
+All documents relevant to this task have been added to the references section at the end of this README.md file.
 
 # END
 
