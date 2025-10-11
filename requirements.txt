@@ -1,0 +1,16 @@
+-- Unpinned package-only requirements (installs latest available versions)
+# If you need reproducible installs, create a lock file: pip freeze > requirements.lock
+ipykernel
+ipympl
+jupyter
+keras
+matplotlib
+numpy
+pandas
+plotly
+requests
+scikit-learn
+scipy
+seaborn
+tensorflow
+yfinance

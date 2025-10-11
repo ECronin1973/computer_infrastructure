@@ -6,8 +6,8 @@ Welcome to Edward Cronin’s repository for the Computer Infrastructure module a
 ### Overview
 This repository is organised into two main sections:
 
-**Section 1: Problems (2025/2026)**  
-This section contains four tasks assigned throughout the module, showcasing practical implementations of core Computer Infrastructure techniques.
+**Section 1: Tasks (2025/2026)**  
+This section contains four problems assigned throughout the module, showcasing practical implementations of core Computer Infrastructure techniques.
 
 **Section 2: Final Project (2025/2026)**  
 This section will present a capstone project that integrates the skills and knowledge acquired during the course. (Coming Soon)
