@@ -1,43 +1,48 @@
-Setup instructions (Windows PowerShell)
+## 🧪 FAANG Stock Data Lab – Quick Setup (Windows PowerShell)
 
-This project contains a Jupyter notebook that demonstrates downloading hourly stock data using `yfinance`. To keep student environments reproducible and small, a minimal requirements file is provided in `requirements.txt`.
+This lab uses `yfinance` to download hourly FAANG stock data. To keep environments reproducible and lightweight, install only what's needed via `requirements_min.txt`.
 
-1) Create and activate a virtual environment (PowerShell)
+```powershell
+# 1. Create and activate virtual environment
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 
-    python -m venv .venv
-    .\.venv\Scripts\Activate.ps1
+# If activation fails due to policy restrictions, run once as Admin:
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-If your shell blocks running scripts, run (as Administrator) once:
+# 2. Upgrade pip and install minimal requirements
+python -m pip install --upgrade pip
+python -m pip install -r requirements_min.txt
 
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+# 3. (Optional) Register virtualenv with Jupyter
+python -m ipykernel install --user --name=faang-lab --display-name "FAANG Lab (.venv)"
 
-2) Upgrade pip and install the minimal requirements
+# 4. Launch Jupyter and run notebook
+jupyter notebook
+# Open notebooks/problems.ipynb and run cells in order:
+# - Setup (imports + plotting defaults)
+# - Verification (smoke test)
+# - Download & runner cells (fetch/save CSVs)
 
-    python -m pip install --upgrade pip
-    python -m pip install -r requirements_min.txt
+# 5. Troubleshooting
+# If a package is missing:
+python -m pip install <package>
+# If yfinance fails, check network and Yahoo Finance access
 
-3) (Optional) Install a kernel so the virtualenv is available to Jupyter
+# 6. Notes
+# For full dev setup, use requirements.txt or contact instructor
+# For CI/grading:
+$env:CI=1
+$env:SHOW_PREVIEW="False"
+# To freeze environment:
+python -m pip freeze > requirements.lock
+# On macOS/Linux, activate with:
+source .venv/bin/activate
+```
 
-    python -m ipykernel install --user --name=computer_infra_venv --display-name "ComputerInfra (.venv)"
+# References & best practices
 
-4) Open the notebook
-
-- Start Jupyter in the repository root with:
-
-    jupyter notebook
-
-- Open `notebooks/problems.ipynb` and run cells in order.
-
-5) Verifying installation
-
-- Run the import cell at the top of the notebook and then the verification cell. If any package is missing, the notebook prints instructions to install it manually. Use the following command in PowerShell to install an individual package:
-
-    python -m pip install yfinance
-
-Notes and tips
-- For reproducible grading, you can create a frozen lock file after installing dependencies with:
-
-    python -m pip freeze > requirements.lock
-
-- If students are on macOS/Linux, the venv activation command is `source .venv/bin/activate`.
-- Avoid installing large packages (TensorFlow) in student environments unless explicitly required.
+[Jupyter best practices / reproducibility:](https://jupyter.org/practices) https://jupyter.org/practices
+[nbval (testing notebooks):](https://nbval.readthedocs.io) https://nbval.readthedocs.io
+[PEP 8 for code style:](https://www.python.org/dev/peps/pep-0008/) https://www.python.org/dev/peps/pep-0008/
+[Binder / Colab for student convenience:](https://mybinder.org) https://mybinder.org

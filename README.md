@@ -63,13 +63,14 @@ jupyter notebook
 
 This project relies on several Python libraries, which are listed in the `requirements.txt` file. These include:
 
-- yfinance
 - pandas
+- numpy
+- yfinance
 - matplotlib
-- datetime
-- os
-- glob
-- TO BE UPDATED AS NECESSARY
+- seaborn
+- requests
+- scikit-learn
+- ipykernel
 
 Ensure that you install these dependencies to guarantee smooth execution of the code.
 
