@@ -164,15 +164,16 @@ TO BE UPDATED
 
 ## References
 
-The following online resources were used to complete tasks in this repository and to create this README.md file:
+This repository consolidates background and references here to keep the notebook focused on runnable steps. Key sources:
 
-1. [ATU Lectures - Applied Statistics, Dr Ian McLoughlin](https://vlegalwaymayo.atu.ie/course/view.php?id=13109)
-2. [Writing README.md files on GitHub](https://help.github.com/en/articles/basic-writing-and-formatting-syntax)
-3. [Creating tables in Markdown](https://www.makeuseof.com/tag/create-markdown-table/)
-4. [GitHub Docs - Creating a repository](https://docs.github.com/en/get-started/quickstart/create-a-repo)
-5. [GitHub Docs - Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-6. [GitHub Docs - Creating a .gitignore file](https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files)
-7. [yfinance Documentation](https://pypi.org/project/yfinance/)
-8. [Pandas Documentation](https://pandas.pydata.org/pandas-docs/stable/)
-9. [Python os Module Documentation](https://docs.python.org/3/library/os.html)
-10. [PEP 8 – Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
+- Assessment brief: https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md
+- PEP 8 (Python style): https://peps.python.org/pep-0008/
+- Jupyter best practices: https://jupyter.org/practices
+- Real Python – Jupyter Notebooks: https://realpython.com/jupyter-notebook-introduction/
+- Real Python – Imports: https://realpython.com/python-imports/
+- pandas documentation: https://pandas.pydata.org/
+- yfinance on PyPI: https://pypi.org/project/yfinance/
+
+Additional general references:
+- GitHub Docs (repo basics): https://docs.github.com/
+- Python standard library (os module): https://docs.python.org/3/library/os.html
