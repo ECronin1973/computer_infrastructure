@@ -136,15 +136,24 @@ The notebook implements this in modular steps:
 
 **Why:** Encapsulation makes code reusable and testable. Validation and defensive copying prevent subtle bugs. ([pandas docs](https://pandas.pydata.org/docs/))
 
-#### 5. **Save CSVs**
-- Loop through tickers and fetch data
-- Check for existing files to avoid duplication (idempotent saves)
-- Generate UTC timestamps: `YYYYMMDDTHHMMSSZ` format
-- Wrap `df.to_csv()` in try/except for robustness
+#### 5. **Save CSVs (Runner Cell)**
+- Loop through tickers and fetch data using `fetch_hourly_history()`
+- Check for existing files to avoid duplication; if files exist, pick the latest by filename
+- Generate UTC timestamps: `YYYYMMDDTHHMMSSZ` format for new saves
+- Wrap `df.to_csv()` in try/except and collect errors in a list
+- Return a `results` dictionary mapping tickers to file paths, plus error summary if any
 
-**Why:** UTC timestamps ensure sortability and reproducibility. Idempotent operations and error handling make the workflow robust. ([Jupyter best practices](https://jupyter.org/practices), [Real Python: file I/O](https://realpython.com/python-file-io/))
+**Why:** UTC timestamps ensure sortability and reproducibility. Idempotent operations (reusing existing files) and error collection make the workflow robust and informative. ([Jupyter best practices](https://jupyter.org/practices), [Real Python: file I/O](https://realpython.com/python-file-io/))
 
-#### 6. **Diagnostics**
+#### 6. **Preview Saved Data (Optional)**
+- Read the latest CSV file for each ticker from `../data/`
+- Parse the 'Date' column as a DateTimeIndex during CSV read
+- Display shape and head of each DataFrame for verification
+- Stores DataFrames in a `data` dictionary for downstream use (e.g., plotting)
+
+**Why:** Reading from saved CSVs avoids redundant network calls and confirms the save operation worked correctly. Parsing dates as DateTimeIndex enables proper time-series operations. ([pandas read_csv docs](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html))
+
+#### 7. **Diagnostics**
 - Use `collections.Counter` to detect duplicate tickers
 - Report clear feedback on the ticker list state
 
@@ -161,9 +170,11 @@ The notebook implements this in modular steps:
 ### Expected Output
 
 After running Problem 1 cells in the notebook:
-- CSV files appear in `notebooks/data/` (e.g., `META_20251018T143052Z.csv`)
-- Each file contains hourly OHLCV (Open, High, Low, Close, Volume) data
-- Files are timestamped and sorted lexicographically
+- CSV files appear in `notebooks/data/` (e.g., `META_20251018T180020Z.csv`)
+- Each file contains hourly OHLCV (Open, High, Low, Close, Volume) data plus a 'Ticker' column
+- Files are timestamped in UTC and sorted lexicographically
+- A `results` dictionary is displayed showing the mapping of ticker → file path
+- If any saves fail, an error summary is printed before the results
 
 ---
 
@@ -171,12 +182,114 @@ After running Problem 1 cells in the notebook:
 
 ### Objective
 
-Write a function called `plot_data()` that opens the latest data file in the `data` folder and, on one plot, plots the `Close` prices for each of the five stocks.
-The plot should include axis labels, a legend, and the date as a title.
-The function should save the plot into a `plots` folder in the root of your repository using a filename in the format `YYYYMMDD-HHmmss.png`.
-Create the `plots` folder if you don't already have one.
+Create a visualisation that plots the `Close` prices for all five FAANG stocks on a single chart. The plot must:
 
-(Implementation details to be added as Problem 2 is completed in the notebook...)
+1. Read the latest CSV files from the `data/` folder
+2. Plot all five stocks' Close prices on one chart with a shared timeline
+3. Include axis labels, legend, and a date-range title
+4. Save the plot to a `plots/` folder with a UTC timestamp: `faang_close_YYYYMMDDTHHMMSSZ.png`
+
+### Requirements
+
+The implementation must:
+- Parse the Date column as a DateTimeIndex for proper time-series plotting
+- Handle missing or empty data gracefully
+- Use matplotlib for plotting with clear labels and legend
+- Create the `plots/` folder if it doesn't exist
+- Use consistent styling (figure size, grid, colors)
+
+### Implementation Approach
+
+The notebook implements this in three main steps:
+
+#### 1. **Load Data from Saved CSVs**
+- Iterate through tickers and find all matching CSV files in `../data/`
+- Select the latest file per ticker by sorting filenames (timestamps are [lexicographically](https://docs.python.org/3/library/functions.html#sorted) sortable)
+- Read each CSV with `pd.read_csv()`, parsing 'Date' as DateTimeIndex
+- Store DataFrames in a dictionary keyed by ticker symbol
+
+**Why:** Reading from saved CSVs avoids redundant network calls and ensures we're plotting the exact data that was saved. Using DateTimeIndex enables proper time-series alignment and formatting. ([pandas datetime docs](https://pandas.pydata.org/docs/user_guide/timeseries.html))
+
+#### 2. **Create the Plot**
+- Compute overall date range from all DataFrames for the title
+- Create a matplotlib figure with default size (10, 5)
+- Loop through the data dictionary and plot each ticker's Close series
+- Add labels for x-axis (Date), y-axis (Close Price USD), and a descriptive title
+- Include a legend with ticker symbols
+
+**Why:** Plotting all series on one chart enables visual comparison of relative performance and trends. Clear labels and legends make the chart self-documenting. ([matplotlib best practices](https://matplotlib.org/stable/users/index.html))
+
+#### 3. **Save the Plot**
+- Ensure `../plots/` directory exists with `os.makedirs(exist_ok=True)`
+- Generate UTC timestamp in `YYYYMMDDTHHMMSSZ` format
+- Save figure to `../plots/faang_close_{timestamp}.png` using `plt.savefig()`
+- Print confirmation message with the saved path
+
+**Why:** UTC timestamps ensure reproducibility and sortability. Saving plots as artifacts enables version control and comparison across runs. ([Jupyter best practices](https://jupyter.org/practices))
+
+### Code Structure
+
+```python
+# Load latest CSV per ticker
+data = {}
+for ticker in tickers:
+    files = [p for p in os.listdir('../data') 
+             if p.startswith(f"{ticker}_") and p.endswith('.csv')]
+    if files:
+        latest = sorted(files, reverse=True)[0]
+        df = pd.read_csv(f'../data/{latest}', 
+                         parse_dates=['Date'], 
+                         index_col='Date')
+        data[ticker] = df
+
+# Compute date range
+min_date = min(df.index.min() for df in data.values())
+max_date = max(df.index.max() for df in data.values())
+
+# Plot
+plt.figure()
+for sym, df in data.items():
+    plt.plot(df.index, df['Close'], label=sym)
+
+plt.xlabel('Date')
+plt.ylabel('Close Price (USD)')
+plt.title(f"FAANG Close Price — {min_date.date()} to {max_date.date()}")
+plt.legend(title='Ticker')
+
+# Save
+os.makedirs('../plots', exist_ok=True)
+ts = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+plt.savefig(f'../plots/faang_close_{ts}.png')
+```
+
+### Sample Output
+
+![FAANG Close Price Plot](plots/faang_close_20251021T171342Z.png)
+
+The plot shows:
+- **META** (blue) — Trading around $710-720
+- **AAPL** (orange) — Trading around $245-250
+- **AMZN** (green) — Trading around $217-222
+- **NFLX** (red) — Trading around $1200-1230 (highest absolute price)
+- **GOOG** (purple) — Trading around $240-244
+
+All stocks show relatively stable patterns over the 5-day period (Oct 13-17, 2025), with NFLX dominating the y-axis due to its higher share price.
+
+### Key Learning Resources
+
+1. **[pandas read_csv with datetime](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)** — Learn how to parse date columns during CSV reading using `parse_dates` and `index_col` parameters.
+
+2. **[matplotlib.pyplot](https://matplotlib.org/stable/api/pyplot_summary.html)** — Understand basic plotting functions: `plot()`, `xlabel()`, `ylabel()`, `title()`, `legend()`, and `savefig()`.
+
+3. **[pandas DateTimeIndex](https://pandas.pydata.org/docs/user_guide/timeseries.html)** — Learn how pandas handles time-series data, automatic alignment, and datetime formatting.
+
+### Expected Output
+
+After running Problem 2 cells in the notebook:
+- A PNG file appears in `notebooks/plots/` (e.g., `faang_close_20251021T171342Z.png`)
+- The plot displays all five stocks on a single chart with proper labels
+- The title shows the exact date range of the data
+- Console prints: `✅ Plot saved to ../plots/faang_close_YYYYMMDDTHHMMSSZ.png`
 
 ---
 
