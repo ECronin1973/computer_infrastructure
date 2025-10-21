@@ -264,7 +264,7 @@ plt.savefig(f'../plots/faang_close_{ts}.png')
 
 ### Sample Output
 
-![FAANG Close Price Plot](plots/faang_close_20251021T171342Z.png)
+<img src="plots/faang_close_20251021T171342Z.png" alt="FAANG Close Price Plot" style="float: left"> 
 
 The plot shows:
 - **META** (blue) — Trading around $710-720
