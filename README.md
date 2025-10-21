@@ -262,9 +262,15 @@ ts = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 plt.savefig(f'../plots/faang_close_{ts}.png')
 ```
 
-### Sample Output
+### 📊 Sample Output
 
-<img src="plots/faang_close_20251021T171342Z.png" alt="FAANG Close Price Plot" style="float: left"> 
+The notebook now displays the saved image inline after plotting, and includes a gallery cell that shows all PNGs in `plots/`.
+
+- Browse all plots: [plots/](plots/)
+- Example image (one of the generated plots):
+
+![FAANG Close Price Plot](plots/faang_close_20251021T171342Z.png)
+
 
 The plot shows:
 - **META** (blue) — Trading around $710-720
