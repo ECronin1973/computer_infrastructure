@@ -9,316 +9,152 @@
 
 ## Overview
 
-This repository contains solutions to four practical problems from the ATU Galway Computer Infrastructure module. The main deliverable is a Jupyter notebook (`notebooks/problems.ipynb`) that demonstrates data retrieval, processing, visualisation, and automation techniques using Python.
+This repository contains solutions to four practical problems from the ATU Galway Computer Infrastructure module. The primary deliverable is the interactive notebook `notebooks/problems.ipynb`, which fetches hourly FAANG stock data, saves timestamped CSVs, and produces comparison plots.
 
-**What's included:**
-- `notebooks/problems.ipynb` — Interactive notebook with all four problems solved
+What's included:
+
+- `notebooks/problems.ipynb` — Interactive notebook with the solutions and step-by-step runner (Steps 0–3)
 - `requirements.txt` — Python package dependencies
-- `README_SETUP.md` — Detailed setup instructions for Windows PowerShell
+- `README_SETUP.md` — Setup instructions for Windows PowerShell
 
-**Assessment brief:** [Computer Infrastructure Problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md)
+This README is a compact companion to the notebook and documents the runtime behaviour and file conventions used by the exercises.
 
 ---
 
-## Quick Start
+## Quick Start (Windows PowerShell)
 
-### 1. Clone the Repository
+1. Clone the repository:
 
-```bash
+```powershell
 git clone https://github.com/ECronin1973/computer_infrastructure.git
 cd computer_infrastructure
 ```
 
-### 2. Set Up Python Environment (Windows PowerShell)
+2. Create and activate a virtual environment, then install dependencies:
 
 ```powershell
-# Create and activate virtual environment
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-
-# If activation fails due to policy, run once:
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-
-# Install dependencies
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-### 3. Launch Jupyter and Open the Notebook
+3. Launch Jupyter and open the notebook:
 
 ```powershell
 jupyter notebook
 ```
 
-Then navigate to `notebooks/problems.ipynb` and run the cells in order.
-
-**For detailed setup instructions, see:** [README_SETUP.md](README_SETUP.md)
+Open `notebooks/problems.ipynb` and run the cells in order. See `README_SETUP.md` for alternative environment notes.
 
 ---
 
-## Dependencies
+## Key configuration & filename conventions
 
-This project uses the following Python libraries (all listed in `requirements.txt`):
+- DATA folder (default): `data/` (notebooks use `DATA_DIR = Path('../data').resolve()`)
+- PLOTS folder (default): `plots/` (notebooks use `PLOTS_DIR = Path('../plots').resolve()`)
+- CSV filename pattern (UTC timestamp to seconds): `TICKER_YYYYMMDD-HHmmss.csv` (example: `AAPL_20251030-142530.csv`)
+- Plot filename pattern (UTC): `faang_close_YYYYMMDD-HHmmss.png` (the notebook also supports a canonical `faang_close.png` option)
 
-- **pandas** — Data manipulation and analysis
-- **numpy** — Numerical computing
-- **yfinance** — Financial data from Yahoo Finance
-- **matplotlib** — Plotting and visualization
-- **seaborn** — Statistical data visualization
-- **requests** — HTTP library
-- **scikit-learn** — Machine learning tools
-- **ipykernel** — Jupyter kernel support
+Notes:
 
----
-
-## Coding Guidelines and References
-
-This project follows established best practices for coding, documentation, and reproducibility in computational notebooks:
-
-- **Jupyter best practices:** Narrative text should explain the rationale for each step, including references. ([Jupyter.org/practices](https://jupyter.org/practices))
-- **The Turing Way:** Document why you made choices, not just what you did. ([The Turing Way](https://the-turing-way.netlify.app/reproducible-research/overview/overview.html))
-- **Diátaxis documentation framework:** Conceptual documentation (why) should be close to the code, but detailed background can go in README. ([Diátaxis](https://diataxis.fr/))
-- **PEP 8:** Encourages clear, readable code and comments—explanations in markdown cells are the notebook equivalent. ([PEP 8](https://peps.python.org/pep-0008/))
+- The notebook's Step 1 writes CSVs into `data/` using UTC timestamps (to seconds) and the ticker prefix. This makes filenames lexicographically sortable by time.
+- The loader picks the latest timestamped CSV per ticker when loading data for plotting.
+- Flags in the notebook control behavior (defaults are set in the Setup cell): `NO_DATE_FILENAMES`, `SAVE_DAILY`, `OVERWRITE`, and `NO_DATE_PLOTS`.
 
 ---
 
-## Problem 1: FAANG Stock Data with yfinance
+## Problem 1 — FAANG Stock Data (summary)
 
-### Objective
+Objective: download hourly data (5-day period, 1-hour interval) for FAANG tickers and save timestamped CSVs.
 
-Download hourly stock data for the five FAANG companies over the previous 5 days and save to CSV files:
+Important behaviour:
 
-- **META** (Facebook/Meta)
-- **AAPL** (Apple)
-- **AMZN** (Amazon)
-- **NFLX** (Netflix)
-- **GOOG** (Google/Alphabet)
+- Filenames: `TICKER_YYYYMMDD-HHmmss.csv` (UTC). Example: `AAPL_20251030-142530.csv`.
+- Folder: saved to `data/` relative to the notebook (setup uses `DATA_DIR = Path('../data').resolve()`).
+- Each CSV contains hourly OHLCV columns, a `Ticker` column, and an explicit `Date` column (saved as the index label so the loader can parse it using `parse_dates=['Date']`).
 
-### Requirements
+Robustness and reproducibility:
 
-The implementation must:
-1. Use the [yfinance](https://pypi.org/project/yfinance/) Python package
-2. Fetch hourly data for each stock (5-day period, 1-hour intervals)
-3. Save data to timestamped CSV files: `TICKER_YYYYMMDD-HHmmss.csv`
-4. Create a `data/` folder if it doesn't exist
-5. Handle errors gracefully (network issues, missing data)
+- The notebook includes an environment verification helper to check package availability and perform a lightweight `yfinance` request before large downloads.
+- File I/O is wrapped in try/except and respects the `OVERWRITE` flag so repeated runs do not clobber files unless requested.
 
-### Implementation Approach
+References for Problem 1:
 
-The notebook implements this in modular steps:
-
-#### 1. **Setup and Imports**
-- Import required libraries (`yfinance`, `pandas`, `os`, `datetime`)
-- Set plotting defaults for consistency
-- Define a `SHOW_PREVIEW` toggle for optional output display
-
-**Why:** Minimal, organized imports improve reproducibility and make dependencies explicit. ([PEP 8](https://peps.python.org/pep-0008/), [Jupyter best practices](https://jupyter.org/practices))
-
-#### 2. **Environment Verification**
-- Check that `pandas` and `yfinance` are available
-- Perform a lightweight test fetch (1 day of AAPL data)
-- Display clear error messages if packages are missing
-
-**Why:** Early verification prevents mid-notebook failures and guides users to install missing dependencies. ([Jupyter best practices](https://jupyter.org/practices), [The Turing Way](https://the-turing-way.netlify.app/reproducible-research/overview/overview.html))
-
-#### 3. **Define Ticker List**
-- Create a canonical list of FAANG tickers: `['META', 'AAPL', 'AMZN', 'NFLX', 'GOOG']`
-- Deduplicate defensively using `dict.fromkeys()` to preserve order
-- Validate the list has exactly 5 tickers
-
-**Why:** Centralizing constants avoids duplication and drift across cells. Deduplication ensures clean, predictable data. ([Real Python: constants](https://realpython.com/python-constants/))
-
-#### 4. **Fetch Function**
-- Define `fetch_hourly_history(ticker, period='5d', interval='1h')`
-- Returns a labeled DataFrame with a 'Ticker' column and 'Date' index
-- Returns `None` on failure with a clear error message
-- Uses `df.copy()` to avoid pandas SettingWithCopyWarning
-
-**Why:** Encapsulation makes code reusable and testable. Validation and defensive copying prevent subtle bugs. ([pandas docs](https://pandas.pydata.org/docs/))
-
-#### 5. **Save CSVs (Runner Cell)**
-- Loop through tickers and fetch data using `fetch_hourly_history()`
-- Check for existing files to avoid duplication; if files exist, pick the latest by filename
-- Generate UTC timestamps: `YYYYMMDD-HHmmss` format for new saves
-- Wrap `df.to_csv()` in try/except and collect errors in a list
-- Return a `results` dictionary mapping tickers to file paths, plus error summary if any
-
-**Why:** UTC timestamps ensure sortability and reproducibility. The clean format (date-time separated by dash) makes filenames easy to read while maintaining chronological ordering. Idempotent operations (reusing existing files) and error collection make the workflow robust and informative. ([Jupyter best practices](https://jupyter.org/practices), [Real Python: file I/O](https://realpython.com/python-file-io/))
-
-#### 6. **Preview Saved Data (Optional)**
-- Read the latest CSV file for each ticker from `../data/`
-- Parse the 'Date' column as a DateTimeIndex during CSV read
-- Display shape and head of each DataFrame for verification
-- Stores DataFrames in a `data` dictionary for downstream use (e.g., plotting)
-
-**Why:** Reading from saved CSVs avoids redundant network calls and confirms the save operation worked correctly. Parsing dates as DateTimeIndex enables proper time-series operations. ([pandas read_csv docs](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html))
-
-#### 7. **Diagnostics**
-- Use `collections.Counter` to detect duplicate tickers
-- Report clear feedback on the ticker list state
-
-**Why:** Diagnostics help users debug inputs and understand what the code is doing. ([Python Cookbook](https://www.oreilly.com/library/view/python-cookbook/0596001673/ch01s02.html))
-
-### Key Learning Resources
-
-1. **[yfinance Documentation](https://pypi.org/project/yfinance/)** — Learn how to use `yf.Ticker()` and `.history()` to fetch stock data, specify time intervals (`interval='1h'`, `period='5d'`), and handle multiple tickers.
-
-2. **[pandas Documentation](https://pandas.pydata.org/)** — Understand DataFrames, `.to_csv()` for saving data, and timestamp handling with pandas datetime functions.
-
-3. **[Python os Module](https://docs.python.org/3/library/os.html)** — Learn `os.makedirs()` for creating directories and `os.path.exists()` for checking file/folder existence.
-
-### Expected Output
-
-After running Problem 1 cells in the notebook:
-- CSV files appear in `data/` (e.g., `META_20251022-143045.csv`)
-- Each file contains hourly OHLCV (Open, High, Low, Close, Volume) data plus a 'Ticker' column
-- Files are timestamped in UTC and sorted lexicographically
-- A `results` dictionary is displayed showing the mapping of ticker → file path
-- If any saves fail, an error summary is printed before the results
+- yfinance: https://pypi.org/project/yfinance/
+- pandas.to_csv / read_csv (parse_dates): https://pandas.pydata.org/
 
 ---
 
-## Problem 2: Plotting Data
+## Problem 2 — Plotting (summary)
 
-### Objective
+Objective: load the latest saved CSV for each ticker and plot Close prices on one chart.
 
-Create a visualisation that plots the `Close` prices for all five FAANG stocks on a single chart. The plot must:
+Behavior:
 
-1. Read the latest CSV files from the `data/` folder
-2. Plot all five stocks' Close prices on one chart with a shared timeline
-3. Include axis labels, legend, and a date-range title
-4. Save the plot to a `plots/` folder with a UTC timestamp: `faang_close_YYYYMMDD-HHmmss.png`
+- The loader finds files matching `TICKER_*.csv` and selects the most recent filename by lexicographic sort (timestamped names are lexicographically sortable when using YYYYMMDD-HHmmss).
+- The plot shows all five Close series on a single timeline, with axis labels, legend, and a date-range title.
+- Plot files are saved to `plots/` using `faang_close_YYYYMMDD-HHmmss.png` (UTC). The notebook optionally supports a stable `faang_close.png` name for embedding.
 
-### Requirements
+References for Problem 2:
 
-The implementation must:
-- Parse the Date column as a DateTimeIndex for proper time-series plotting
-- Handle missing or empty data gracefully
-- Use matplotlib for plotting with clear labels and legend
-- Create the `plots/` folder if it doesn't exist
-- Use consistent styling (figure size, grid, colors)
-
-### Implementation Approach
-
-The notebook implements this in three main steps:
-
-#### 1. **Load Data from Saved CSVs**
-- Iterate through tickers and find all matching CSV files in `../data/`
-- Select the latest file per ticker by sorting filenames (timestamps are [lexicographically](https://docs.python.org/3/library/functions.html#sorted) sortable)
-- Read each CSV with `pd.read_csv()`, parsing 'Date' as DateTimeIndex
-- Store DataFrames in a dictionary keyed by ticker symbol
-
-**Why:** Reading from saved CSVs avoids redundant network calls and ensures we're plotting the exact data that was saved. Using DateTimeIndex enables proper time-series alignment and formatting. ([pandas datetime docs](https://pandas.pydata.org/docs/user_guide/timeseries.html))
-
-#### 2. **Create the Plot**
-- Compute overall date range from all DataFrames for the title
-- Create a matplotlib figure with default size (10, 5)
-- Loop through the data dictionary and plot each ticker's Close series
-- Add labels for x-axis (Date), y-axis (Close Price USD), and a descriptive title
-- Include a legend with ticker symbols
-
-**Why:** Plotting all series on one chart enables visual comparison of relative performance and trends. Clear labels and legends make the chart self-documenting. ([matplotlib best practices](https://matplotlib.org/stable/users/index.html))
-
-#### 3. **Save the Plot**
-- Ensure `../plots/` directory exists with `os.makedirs(exist_ok=True)`
-- Generate UTC timestamp in `YYYYMMDD-HHmmss` format
-- Save figure to `../plots/faang_close_{timestamp}.png` using `plt.savefig()`
-- Print confirmation message with the saved path
-
-**Why:** UTC timestamps ensure reproducibility and sortability. The clean format (date-time separated by dash) makes filenames easy to read while maintaining chronological ordering. Each run creates a unique file, enabling version control and comparison of plots over time. ([Jupyter best practices](https://jupyter.org/practices))
-
-### Code Structure
-
-```python
-# Load latest CSV per ticker
-data = {}
-for ticker in tickers:
-    files = [p for p in os.listdir('../data') 
-             if p.startswith(f"{ticker}_") and p.endswith('.csv')]
-    if files:
-        latest = sorted(files, reverse=True)[0]
-        df = pd.read_csv(f'../data/{latest}', 
-                         parse_dates=['Date'], 
-                         index_col='Date')
-        data[ticker] = df
-
-# Compute date range
-min_date = min(df.index.min() for df in data.values())
-max_date = max(df.index.max() for df in data.values())
-
-# Plot
-plt.figure()
-for sym, df in data.items():
-    plt.plot(df.index, df['Close'], label=sym)
-
-plt.xlabel('Date')
-plt.ylabel('Close Price (USD)')
-plt.title(f"FAANG Close Price — {min_date.date()} to {max_date.date()}")
-plt.legend(title='Ticker')
-
-# Save
-os.makedirs('../plots', exist_ok=True)
-ts = datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')
-plot_path = os.path.join('../plots', f'faang_close_{ts}.png')
-plt.savefig(plot_path)
-```
-
-### 📊 Sample Output
-
-Below is an example plot generated by the notebook showing FAANG stock Close prices over a 5-day period:
-
-![FAANG Close Price Plot](plots/faang_close_20251022-150454.png)
-
-
-The plot shows:
-- **META** (blue) — Trading around $710-720
-- **AAPL** (orange) — Trading around $245-250
-- **AMZN** (green) — Trading around $217-222
-- **NFLX** (red) — Trading around $1200-1230 (highest absolute price)
-- **GOOG** (purple) — Trading around $240-244
-
-All stocks show relatively stable patterns over the 5-day period (Oct 13-17, 2025), with NFLX dominating the y-axis due to its higher share price.
-
-### Key Learning Resources
-
-1. **[pandas read_csv with datetime](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)** — Learn how to parse date columns during CSV reading using `parse_dates` and `index_col` parameters.
-
-2. **[matplotlib.pyplot](https://matplotlib.org/stable/api/pyplot_summary.html)** — Understand basic plotting functions: `plot()`, `xlabel()`, `ylabel()`, `title()`, `legend()`, and `savefig()`.
-
-3. **[pandas DateTimeIndex](https://pandas.pydata.org/docs/user_guide/timeseries.html)** — Learn how pandas handles time-series data, automatic alignment, and datetime formatting.
-
-### Expected Output
-
-After running Problem 2 cells in the notebook:
-- A timestamped PNG file appears in `plots/` (e.g., `faang_close_20251022-143045.png`)
-- The plot displays all five stocks on a single chart with proper labels
-- The title shows the exact date range of the data
-- Console prints: `✅ Plot saved to ../plots/faang_close_YYYYMMDD-HHmmss.png`
+- matplotlib: https://matplotlib.org/
+- pandas timeseries guide: https://pandas.pydata.org/docs/user_guide/timeseries.html
 
 ---
 
+## Scripts & Automation (Problems 3–4)
 
-## Problem 3: Script
-
-### Objective
-
-Create a Python script called `faang.py` in the root of your repository.
-Copy the above functions into it and it so that whenever someone at the terminal types `./faang.py`, the script runs, downloading the data and creating the plot.
-Note that this will require a shebang line and the script to be marked executable.
-Explain the steps you took in your notebook.
-
-(Implementation details to be added as Problem 3 is completed in the notebook...)
+- Problem 3 suggests packaging the helper functions into a CLI script `faang.py` (root) that performs the same steps as the notebook when run from the terminal.
+- Problem 4 suggests a GitHub Actions workflow to run the script weekly (example schedule: every Saturday morning). Place workflows in `.github/workflows/faang.yml`.
 
 ---
 
-## Problem 4: Automation
+## Helper functions (notebook)
 
-### Objective
+The notebook contains small, focused helper functions that make the workflow reproducible and testable. Examples:
 
-Create a [GitHub Actions workflow](https://docs.github.com/en/actions) to run your script every Saturday morning.
-The script should be called `faang.yml` in a `.github/workflows/` folder in the root of your repository.
-In your notebook, explain each of the individual lines in your workflow.
+- `verify_environment()` — checks package availability and tests a sample `yfinance` request
+- `install_requirements_if_missing()` — installs packages from `requirements.txt` if missing
+- `deduplicate_preserve_order(seq)` — removes duplicates while preserving input order
+- `fetch_hourly_history(ticker, period='5d', interval='1h')` — returns hourly stock DataFrame or `None`
+- `save_hourly_data(ticker, folder='../data')` — fetches and saves hourly stock data to timestamped CSVs
+- `load_latest_csvs(tickers, folder='../data')` — loads the latest CSV per ticker into a dictionary of DataFrames
+- `preview_dataframe(df)` — prints shape and head of a DataFrame for inspection
 
-(Implementation details to be added as Problem 4 is completed in the notebook...)
+These are described and documented inline in `notebooks/problems.ipynb`.
 
-# END
+> 📚 *“Functions help break our program into smaller and modular chunks.”* — [GeeksforGeeks](https://www.geeksforgeeks.org/python-functions/)  
+> 🧠 *“Functional decomposition improves clarity and supports reuse.”* — [Python.org](https://docs.python.org/3/howto/functional.html)  
+> 🛠️ *“Clean, idiomatic Python code often relies on small, focused helper functions.”* — *Python Cookbook*, 3rd Ed., O’Reilly
+
+---
+
+## References & further reading
+
+- yfinance repository and docs — https://github.com/ranaroussi/yfinance
+- pandas documentation (read_csv, to_csv, DateTimeIndex) — https://pandas.pydata.org/
+- matplotlib — https://matplotlib.org/
+- Jupyter notebook best practices — https://jupyter.org/practices
+- The Turing Way (reproducible research) — https://the-turing-way.netlify.app/
+- PEP 8 style guide — https://peps.python.org/pep-0008/
+- GeeksforGeeks Python functions — https://www.geeksforgeeks.org/python-functions/
+- Python.org functional programming HOWTO — https://docs.python.org/3/howto/functional.html
+- Real Python — https://realpython.com/
+- Python Cookbook, 3rd Ed. — https://www.oreilly.com/library/view/python-cookbook-3rd/9781449357337/
+
+---
+
+## Quick verification (how to run the notebook)
+
+1. Open `notebooks/problems.ipynb` in Jupyter.
+2. Run the Setup cell (imports and flags). Adjust flags if you want canonical filenames or timestamped names.
+3. Run the runner cells in order:
+   - Step 0 — Smoke test
+   - Step 1 — Fetch & save (creates `data/TICKER_YYYYMMDD-HHmmss.csv`)
+   - Step 2 — Load (reads latest CSVs)
+   - Step 3 — Plot (saves `plots/faang_close_YYYYMMDD-HHmmss.png`)
+
+---
+
+**End of README**
