@@ -130,6 +130,12 @@ These are described and documented inline in `notebooks/problems.ipynb`.
 
 ---
 
+## Personal Issues Encountered
+
+I spent a considerable amount of time viewing lectures online, reviewing the questions in the problems to ensure that I fully understood the requirements before proceeding with the implementation. This helped me to avoid any misunderstandings and ensured that my solutions were aligned with the expectations of the module. Having created CSV files in the data folder, I realised that thet did not have column headers. I had to revisit the code to ensure that the headers were included when saving the CSV files. This experience highlighted the importance of thoroughly checking the output of each step in the data processing pipeline to ensure accuracy and completeness.  I learned about helper functions and their importance in writing clean and modular code.  I modified my code cells to generate a singular helper function for repeated logic, which improved the readability and maintainability of my code.  I retested my notebook after making these changes to ensure that everything worked as expected.  While I utilised GitHub Copilot to assist with code generation, I ensured that I reviewed and understood the generated code to maintain the quality and integrity of my solutions.
+
+---
+
 ## References & further reading
 
 - yfinance repository and docs — https://github.com/ranaroussi/yfinance
@@ -142,6 +148,13 @@ These are described and documented inline in `notebooks/problems.ipynb`.
 - Python.org functional programming HOWTO — https://docs.python.org/3/howto/functional.html
 - Real Python — https://realpython.com/
 - Python Cookbook, 3rd Ed. — https://www.oreilly.com/library/view/python-cookbook-3rd/9781449357337/
+- GitHub Actions documentation — https://docs.github.com/en/actions
+
+---
+
+## Acknowledgements
+ Github Copilot. "This work was partially supported by GitHub Copilot, an AI-powered code completion tool
+ developed by GitHub, which assisted in generating parts of the code."
 
 ---
 
