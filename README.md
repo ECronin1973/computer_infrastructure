@@ -38,4 +38,54 @@ To install `yfinance`, run the following command in your notebook environment:
 
 ```python
 %pip install yfinance
+```
 
+## 📊 Problem 1 — FAANG Stock Data with yfinance
+
+In this task, you'll download **hourly stock data** for the FAANG companies:
+
+- `META` (Facebook)
+- `AAPL` (Apple)
+- `AMZN` (Amazon)
+- `NFLX` (Netflix)
+- `GOOG` (Google)
+
+You'll retrieve data for the **past 5 days** using the `yfinance` library and save timestamped CSVs to the `data/` folder.
+
+### 🧼 Notebook Guidelines
+- Keep code cells small, well-commented, and reproducible
+- Use centralized imports and configuration for clarity
+- Avoid re-importing modules in helper cells
+
+### 📥 Inputs
+- No user input required: data is fetched live from Yahoo Finance via `yfinance`
+- Network access must be available for `yfinance` requests
+
+### 📤 Outputs
+- Timestamped CSV file saved to the `data/` folder, all tickers in one file
+- Filename pattern (UTC): `YYYYMMDD-HHmmss.csv`  
+  Example: `20251030-142530.csv`
+- CSV contains hourly OHLCV columns with a `Date` column suitable for parsing as a `DatetimeIndex`
+- These files are used by downstream cells (preview, plotting, and the `faang.py` script)
+
+### ⚙️ Notebook Setup
+The notebook includes a minimal setup cell that:
+- Imports core libraries for data analysis and visualisation
+- Sets default plot styles for consistency
+- Defines a toggle (`SHOW_PREVIEW`) to control whether large DataFrames are displayed inline
+
+### 📁 Directory & Save Behavior
+- `DATA_DIR` and `PLOTS_DIR` are resolved using `Path` objects
+- `NO_DATE_FILENAMES`: when `True`, saves as `<TICKER>.csv` (no date)
+- `SAVE_DAILY`: when `True`, saves as `<TICKER>_YYYYMMDD.csv`
+- If both flags are `False`, filenames include full timestamps
+- `OVERWRITE`: when `True`, replaces existing files
+- `NO_DATE_PLOTS`: when `True`, saves plots as `faang_close.png`; otherwise includes timestamp
+
+### 🎨 Plotting Defaults
+- Default figure size: `(10, 5)`
+- Style: `whitegrid` via `seaborn`
+
+> ✅ Centralized imports loaded. If you need to install packages, see `README_SETUP.md`.
+
+> 💡 Tip: Use `%pip install` in notebooks only if needed. Prefer project virtual environments and `requirements.txt` for reproducibility.
