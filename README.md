@@ -77,7 +77,7 @@ The notebook includes a minimal setup cell that:
 ### 📁 Directory & Save Behavior
 - `DATA_DIR` and `PLOTS_DIR` are resolved using `Path` objects
 - `NO_DATE_FILENAMES`: when `True`, saves as `<TICKER>.csv` (no date)
-- `SAVE_DAILY`: when `True`, saves as `<TICKER>_YYYYMMDD.csv`
+- `SAVE_DAILY`: when `True`, saves as `YYYYMMDD.csv`
 - If both flags are `False`, filenames include full timestamps
 - `OVERWRITE`: when `True`, replaces existing files
 - `NO_DATE_PLOTS`: when `True`, saves plots as `faang_close.png`; otherwise includes timestamp
