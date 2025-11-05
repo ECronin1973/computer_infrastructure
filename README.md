@@ -1,4 +1,4 @@
-# 🏗️ FAANG Stock Data Lab – Infrastructure & Setup
+# 🏗️ FAANG Stock Data
 
 This project explores hourly stock data for the FAANG companies—**Facebook (Meta), Apple, Amazon, Netflix, and Google (Alphabet)**—using Python. It is designed for computing professionals and data enthusiasts interested in financial data analysis.
 
