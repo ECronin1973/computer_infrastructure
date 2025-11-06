@@ -1,47 +1,8 @@
 
-# FAANG Stock Data — Hourly Analysis
+📈 FAANG Stock Data — Hourly Analysis
+This repository provides a Jupyter notebook and supporting code for fetching, inspecting, and plotting hourly OHLCV stock data for the FAANG companies (Meta, Apple, Amazon, Netflix, and Alphabet). It is based on the [Assessment Problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md) for the [ATU Computer Infrastructure module 2025–2026](https://vlegalwaymayo.atu.ie/course/view.php?id=13109).
 
-This repository provides a Jupyter notebook and supporting code for fetching, inspecting, and plotting hourly OHLCV stock data for the FAANG companies (Meta, Apple, Amazon, Netflix, and Alphabet). This README summarises the notebook (`notebooks/problems.ipynb`), explains environment setup, and lists references for further study.
-
----
-
-## 🎯 Target Audience
-
-This lab is intended for computing students and professionals with some experience in Python (familiarity with pandas and matplotlib is recommended). The material is self-contained, with helper functions, environment checks, and usage notes provided in the notebook, enabling users to follow along in a local environment or CI pipeline.
-
----
-
-## 🧩 Assignment Structure
-
-The notebook addresses the following problems, as outlined in the [Assessment Problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md) for the ATU [Computer Infrastructure module 2025–2026](https://vlegalwaymayo.atu.ie/course/view.php?id=13109):
-
-- **Problem 1:** Fetch and save hourly FAANG data
-- **Problem 2:** Load and visualise the latest dataset
-- **Problems 3–4:** Reserved for future extensions (e.g., anomaly detection, forecasting)
-
----
-
-## Project Overview
-
-- Retrieve hourly stock data using `yfinance`
-- Clean and prepare OHLCV time series in pandas
-- Visualise comparative close-price series for FAANG tickers
-- Practical tips for reproducible notebook work (centralised imports, plotting defaults, timestamped outputs)
-
----
-
-## Learning Outcomes
-
-After completing the notebook, users will be able to:
-
-- Fetch hourly historical data for multiple tickers and save combined CSVs
-- Load the most recent timestamped CSV into pandas for analysis
-- Produce and save timestamped plots comparing close prices
-- Apply defensive programming patterns in notebooks to enhance reproducibility and debuggability
-
----
-
-## 📚 Background: Accessing Market Data with yfinance
+### 📚 Background: Accessing Market Data with yfinance
 
 This project uses [`yfinance`](https://github.com/ranaroussi/yfinance) to retrieve hourly OHLCV data from Yahoo Finance.
 
@@ -56,11 +17,147 @@ This project uses [`yfinance`](https://github.com/ranaroussi/yfinance) to retrie
 
 ---
 
+## 🎯 Target Audience
+
+This repository is intended for computing students and professionals with some experience in Python (familiarity with pandas and matplotlib is recommended). The material is self-contained, with helper functions, environment checks, and usage notes provided in the notebook, enabling users to follow along in a local environment or CI pipeline.
+
+---
+##  Problem-Based Structure
+
+### 🧪 Problem 1: Data from yfinance
+
+**Objective:** Fetch hourly OHLCV data for the five FAANG tickers using the yfinance package and save the results as timestamped CSV files.
+
+**Steps:**
+
+1. Define a canonical list of FAANG tickers (META, AAPL, AMZN, NFLX, GOOG)
+
+2. Use fetch_hourly_history() to retrieve 5 days of hourly data per ticker
+
+3. Validate and label each DataFrame
+
+4. Save combined data to the data/ folder with filenames formatted as YYYYMMDD-HHMMSS.csv
+
+**Key Concepts:**
+
+- Defensive programming (e.g. fallback tickers, empty DataFrame checks)
+
+- UTC timestamping for reproducibility
+
+- Use of pandas and yfinance for data handling
+
+---
+
+## 📊 Problem 2: Plotting Data
+
+**Objective:** Visualise the closing prices of all FAANG tickers on a single plot using the most recent CSV file.
+
+**Steps:**
+
+1. Load the latest CSV from the data/ folder
+
+2. Plot the Close prices for each ticker using matplotlib and seaborn
+
+3. Add axis labels, a legend, and a UTC timestamped title
+
+4. Save the plot to the plots/ folder as YYYYMMDD-HHMMSS.png
+
+**Key Concepts:**
+
+- Data filtering by ticker
+
+- Plot styling and layout
+
+- Saving plots programmatically
+
+---
+
+## 🐍 Problem 3: Script
+
+**Objective:** Convert the notebook logic into a standalone Python script (faang.py) that can be run from the command line.
+
+## 🧾 Script : `faang.py`
+
+This script automates the process of downloading and visualising hourly stock data for FAANG companies (Meta, Apple, Amazon, Netflix, Google). It mirrors the logic developed in the notebook and is designed for command-line use.
+
+**Script Features:**
+
+- Fetches and saves hourly data using yfinance
+
+- Generates and saves a comparative plot
+
+- Supports CLI flags:
+
+--no-download: Use latest CSV without fetching new data
+
+--outdir: Specify custom output directory
+
+--no-display: Suppress plot display (for automation)
+
+### 🧱 Steps Taken in the Script
+
+1. **Define Canonical Tickers**
+   - A default list of FAANG tickers is defined and deduplicated.
+   - If a custom list is provided globally, it is validated and used instead.
+
+2. **Fetch Hourly Data**
+   - The `fetch_hourly_history()` function retrieves 5 days of hourly OHLCV data for each ticker using the `yfinance` API.
+   - Each DataFrame is labelled with its ticker and validated to ensure it's not empty.
+
+3. **Save Data to CSV**
+   - Valid data is combined and saved to a timestamped CSV file in the `data/` folder.
+   - UTC timestamps are used for reproducibility and logging.
+
+4. **Generate Plot**
+   - The `plot_data()` function reads the latest CSV and plots the closing prices for all tickers.
+   - The plot includes axis labels, a legend, and a UTC timestamped title.
+   - The image is saved to the `plots/` folder.
+
+5. **Support CLI Flags**
+   - `--no-download`: Skips data fetching and uses the latest CSV
+   - `--outdir`: Specifies a custom output directory
+   - `--no-display`: Suppresses plot display (useful for automation)
+
+6. **Run as Executable**
+   - The script includes a shebang line and can be run directly from the terminal.
+   - Example usage:
+     ```bash
+     ./faang.py
+     python faang.py --no-download --outdir ./custom_data --no-display
+     ```
+
+---
+
+## 🤖 Problem 4: Automation
+
+**Objective:** Automate the script using GitHub Actions to run every Saturday morning.
+
+**Steps:**
+
+1. Create a workflow file: .github/workflows/faang.yml
+
+2. Schedule the job using a cron expression (0 6 * * 6)
+
+3. Install dependencies and run faang.py with appropriate flags
+
+4. Save outputs to the repository or configured storage
+
+**Key Concepts:**
+
+- CI/CD with GitHub Actions
+
+- Scheduled automation using cron syntax
+
+- Headless execution of CLI scripts
+
+---
+
 ## Repository Structure
 
 - `notebooks/problems.ipynb` — Primary notebook, organised into modular steps (environment verification, fetch & save, load, plot)
+- `scripts/faang.py` — Standalone script for fetching and plotting FAANG data
 - `data/` — Timestamped CSV outputs (e.g., `20251105-220824.csv`)
-- `plots/` — Generated PNG visualisations (e.g., FAANG close-price chart)
+- `plots/` — Generated PNG visualisations (e.g., `20251105-220824.png`)
 - `requirements.txt` — List of Python packages for environment setup
 
 ---
@@ -132,14 +229,10 @@ Each step is modular, allowing users to rerun parts of the workflow without unne
 - [Real Python](https://realpython.com/) — articles on imports, file I/O, and constants
 
 ---
-
-## Next Steps / Suggestions
-
-- Convert the notebook's core logic into a CLI script (`faang.py`) for non-interactive use (documented as Problem 3)
-- Add a small automated test to validate the `verify_environment()` behaviour in CI (mocking network calls where appropriate)
+**Licence:** See repository `LICENSE` file.
 
 ---
 
-_Last updated: see commit history. For specific questions about the notebook, open `notebooks/problems.ipynb` and inspect the annotated cells._
+     ## Next Steps / Suggestions
 
-**Licence:** See repository `LICENSE` file.
+- Add a small automated test to validate the `verify_environment()` behaviour in CI (mocking network calls where appropriate)
