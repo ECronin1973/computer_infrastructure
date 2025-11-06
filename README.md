@@ -2,6 +2,37 @@
 📈 FAANG Stock Data — Hourly Analysis
 This repository provides a Jupyter notebook and supporting code for fetching, inspecting, and plotting hourly OHLCV stock data for the FAANG companies (Meta, Apple, Amazon, Netflix, and Alphabet). It is based on the [Assessment Problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md) for the [ATU Computer Infrastructure module 2025–2026](https://vlegalwaymayo.atu.ie/course/view.php?id=13109).
 
+---
+
+## Repository Structure
+
+- `notebooks/problems.ipynb` — Primary notebook, organised into modular steps (environment verification, fetch & save, load, plot)
+- `scripts/faang.py` — Standalone script for fetching and plotting FAANG data
+- `data/` — Timestamped CSV outputs (e.g., `20251105-220824.csv`)
+- `plots/` — Generated PNG visualisations (e.g., `20251105-220824.png`)
+- `requirements.txt` — List of Python packages for environment setup
+
+---
+
+## Quick Start
+
+1. **Create and activate a virtual environment (recommended):**
+   - Windows PowerShell:
+     ```powershell
+     python -m venv .venv; .\.venv\Scripts\Activate.ps1
+     ```
+2. **Install requirements:**
+   ```powershell
+   python -m pip install -r requirements.txt
+   ```
+3. **Open the notebook in JupyterLab or Jupyter Notebook and run the cells in order.** Alternatively, run the smoke tests described in the notebook.
+
+**Notes:**
+- Prefer `%pip install` inside a notebook cell only for ad-hoc installs; for reproducibility, use the environment and `requirements.txt`.
+- Network access is required for `yfinance` requests.
+
+---
+
 ### 📚 Background: Accessing Market Data with yfinance
 
 This project uses [`yfinance`](https://github.com/ranaroussi/yfinance) to retrieve hourly OHLCV data from Yahoo Finance.
@@ -45,6 +76,14 @@ This repository is intended for computing students and professionals with some e
 - UTC timestamping for reproducibility
 
 - Use of pandas and yfinance for data handling
+
+## Behaviour and File Naming
+
+- Timestamp format (UTC) for CSVs: `YYYYMMDD-HHMMSS` (e.g., `20251105-220824.csv`)
+
+- Default behaviour is conservative (no overwrite); toggle flags are available in the notebook to change this
+
+- Supports both timestamped and non-timestamped filenames via configuration flags
 
 ---
 
@@ -126,7 +165,37 @@ This script automates the process of downloading and visualising hourly stock da
      python faang.py --no-download --outdir ./custom_data --no-display
      ```
 
----
+### Run file in Codespaces
+
+As file **faang.py** is already in the repository, simply open the Codespaces terminal and view repository structure to confirm file is present.
+
+1. Check file permissions using command
+
+```bash
+ls -l
+```
+Output should show something like:
+*-rw-rw-rw-  1 codespace root 5333 Nov 6 11:26 faang.py*
+**This indicates the file is not executable.**
+
+
+2. If not executable, run command to add execute permissions:
+```bash
+chmod u+x faang.py
+```
+
+repeat step 1 to confirm permissions changed:
+```bash
+ls -l
+```
+Output should now show something like:
+*-rw-rwx-rw-  1 codespace root 5333 Nov  6 11:26 faang.py*
+**This indicates the file is now executable.**
+
+3. Run the script:
+```bash
+./faang.py
+```
 
 ## 🤖 Problem 4: Automation
 
@@ -152,73 +221,6 @@ This script automates the process of downloading and visualising hourly stock da
 
 ---
 
-## Repository Structure
-
-- `notebooks/problems.ipynb` — Primary notebook, organised into modular steps (environment verification, fetch & save, load, plot)
-- `scripts/faang.py` — Standalone script for fetching and plotting FAANG data
-- `data/` — Timestamped CSV outputs (e.g., `20251105-220824.csv`)
-- `plots/` — Generated PNG visualisations (e.g., `20251105-220824.png`)
-- `requirements.txt` — List of Python packages for environment setup
-
----
-
-## Quick Start
-
-1. **Create and activate a virtual environment (recommended):**
-   - Windows PowerShell:
-     ```powershell
-     python -m venv .venv; .\.venv\Scripts\Activate.ps1
-     ```
-2. **Install requirements:**
-   ```powershell
-   python -m pip install -r requirements.txt
-   ```
-3. **Open the notebook in JupyterLab or Jupyter Notebook and run the cells in order.** Alternatively, run the smoke tests described in the notebook.
-
-**Notes:**
-- Prefer `%pip install` inside a notebook cell only for ad-hoc installs; for reproducibility, use the environment and `requirements.txt`.
-- Network access is required for `yfinance` requests.
-
----
-
-## Notebook Structure
-
-The notebook is designed to be read and executed sequentially. Key sections:
-
-- **Setup and centralised imports:** All imports are in one cell for readability and to reduce duplication.
-- **Global configuration:** Plotting defaults, data and plots directories, and toggles (preview, filename style, overwrite behaviour).
-- **Environment verification:** Checks for required packages and performs a lightweight `yfinance` request (AAPL) as a smoke test.
-- **Utility functions:** Well-documented helpers for deduplication, fetching hourly history, saving combined CSVs, and loading the latest CSV.
-
-- **Runner steps (0–3):**
-  - Step 0 — Smoke test: quick single-ticker fetch to validate helper functions and connectivity.
-  - Step 1 — Fetch & Save: download hourly data for FAANG tickers and save a timestamped CSV in `data/`.
-  - Step 2 — Load: read the most recent combined CSV into a dictionary of pandas DataFrames (indexed by Date).
-  - Step 3 — Plot: generate and save a comparative close-price chart to `plots/`.
-
-Each step is modular, allowing users to rerun parts of the workflow without unnecessary network calls.
-
----
-
-## Behaviour and File Naming
-
-- Timestamp format (UTC) for CSVs and plots: `YYYYMMDD-HHMMSS` (e.g., `20251105-220824.csv`)
-- Default behaviour is conservative (no overwrite); toggle flags are available in the notebook to change this
-- Supports both timestamped and non-timestamped filenames via configuration flags
-
----
-
-## Checks and Good Practice
-
-- Run the environment verification cell first to confirm package availability and API/network access
-- If packages are missing, install them with `pip` or use `install_requirements_if_missing()` provided in the notebook
-- Keep code cells small, well-commented, and idempotent where possible
-- Centralise imports and configuration to reduce errors
-- Use UTC timestamps for machine-sortable and reproducible outputs
-- Wrap file I/O in try/except blocks for actionable diagnostics
-
----
-
 ## References and Further Reading
 
 - [yfinance documentation](https://github.com/ranaroussi/yfinance)
@@ -230,9 +232,3 @@ Each step is modular, allowing users to rerun parts of the workflow without unne
 
 ---
 **Licence:** See repository `LICENSE` file.
-
----
-
-     ## Next Steps / Suggestions
-
-- Add a small automated test to validate the `verify_environment()` behaviour in CI (mocking network calls where appropriate)
