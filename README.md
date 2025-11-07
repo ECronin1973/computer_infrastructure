@@ -1,35 +1,72 @@
+# FAANG Stock Analysis — Winter 25/26 Assessment
 
 📈 FAANG Stock Data — Hourly Analysis
-This repository provides a Jupyter notebook and supporting code for fetching, inspecting, and plotting hourly OHLCV stock data for the FAANG companies (Meta, Apple, Amazon, Netflix, and Alphabet). It is based on the [Assessment Problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md) for the [ATU Computer Infrastructure module 2025–2026](https://vlegalwaymayo.atu.ie/course/view.php?id=13109).
+This repository provides a Jupyter notebook and supporting code for fetching, inspecting, and visualising hourly OHLCV stock data for the FAANG companies (Meta, Apple, Amazon, Netflix, and Alphabet). It is based on the [Assessment Problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md) for the [ATU Computer Infrastructure module 2025–2026](https://vlegalwaymayo.atu.ie/course/view.php?id=13109).
 
 ---
 
 ## Repository Structure
 
-- `problems.ipynb` — Primary notebook, organised into modular steps (environment verification, fetch & save, load, plot)
-- `faang.py` — Standalone script for fetching and plotting FAANG data
+- `problems.ipynb` — Primary notebook, structured into modular steps for setup, data collection, loading, and plotting
+- `faang.py` — Standalone CLI script that mirrors the notebook logic
 - `data/` — Timestamped CSV outputs (e.g., `20251105-220824.csv`)
 - `plots/` — Generated PNG visualisations (e.g., `20251105-220824.png`)
 - `requirements.txt` — List of Python packages for environment setup
 
 ---
 
-## Quick Start
+## Download Repository
+To download this repository, you can use the following command in your terminal:
 
-1. **Create and activate a virtual environment (recommended):**
-   - Windows PowerShell:
-     ```powershell
-     python -m venv .venv; .\.venv\Scripts\Activate.ps1
-     ```
-2. **Install requirements:**
-   ```powershell
-   python -m pip install -r requirements.txt
+```bash
+git clone https://github.com/ECronin1973/computer_infrastructure.git
+cd computer_infrastructure
+```
+
+## 🔧 Environment Setup Instructions
+
+To run the notebook and script successfully, follow these steps to set up your Python environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+1. **Install Python 3.10+**  
+   Ensure Python is installed and available in your system path.  
+   [📖 Reference: Installing Python](https://realpython.com/installing-python/)
+
+2. **Create a virtual environment (recommended):**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
-3. **Open the notebook in JupyterLab or Jupyter Notebook and run the cells in order.** Alternatively, run the smoke tests described in the notebook.
 
-**Notes:**
-- Prefer `%pip install` inside a notebook cell only for ad-hoc installs; for reproducibility, use the environment and `requirements.txt`.
-- Network access is required for `yfinance` requests.
+## To Run the Notebook
+3. **Install required packages:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Launch Jupyter Notebook:**
+   ```bash
+   jupyter notebook problems.ipynb
+   ```
+
+5. **Run the notebook cells sequentially.**
+
+## To Run the Script faang.py
+6. **Make the script executable (if necessary):**
+   ```bash
+   chmod u+x faang.py
+   ```
+
+7. **Execute the script:**
+   ```bash
+   ./faang.py
+   ```
+
+💡 If you're using **GitHub Codespaces**, open the terminal and follow the same script execution steps with file. Use chmod u+x faang.py if the file is not yet executable.
+
+**📖 Reference:** [chmod Command — GeeksforGeeks](https://www.geeksforgeeks.org/linux-unix/chmod-command-linux/) — Used to modify file permissions for script execution.
 
 ---
 
@@ -44,38 +81,33 @@ This project uses [`yfinance`](https://github.com/ranaroussi/yfinance) to retrie
 - Returns pandas-compatible DataFrames
 - Ideal for exploratory analysis and educational use
 
+**📖 Reference:** [yfinance documentation](https://pypi.org/project/yfinance/) — Used to fetch financial data programmatically via the Yahoo Finance API.
+
 > ⚠️ Note: `yfinance` is not affiliated with or endorsed by Yahoo Inc. Use it only for educational or research purposes.
 
 ---
 
 ## 🎯 Target Audience
+This repository is designed for computing students and professionals with intermediate Python skills. Familiarity with pandas, matplotlib, and basic CLI usage is recommended. The notebook includes environment checks, helper functions, and modular steps to support reproducibility and automation.
 
-This repository is intended for computing students and professionals with some experience in Python (familiarity with pandas and matplotlib is recommended). The material is self-contained, with helper functions, environment checks, and usage notes provided in the notebook, enabling users to follow along in a local environment or CI pipeline.
+**📖 Reference:** [Real Python — CLI Scripts](https://realpython.com/python-command-line-interfaces/) — Used to design and implement command-line flags in faang.py.
 
 ---
-##  Problem-Based Structure
 
-### 🧪 Problem 1: Data from yfinance
+### 🧪 Problem 1: Fetch Hourly FAANG Data
 
 **Objective:** Fetch hourly OHLCV data for the five FAANG tickers using the yfinance package and save the results as timestamped CSV files.
 
-**Steps:**
+## Workflow:
 
-1. Define a canonical list of FAANG tickers (META, AAPL, AMZN, NFLX, GOOG)
+- Define and validate the FAANG ticker list
+- Use fetch_hourly_history() to retrieve 5 days of hourly data per ticker
+- Label and clean each DataFrame
+- Save combined data to a timestamped CSV file
 
-2. Use fetch_hourly_history() to retrieve 5 days of hourly data per ticker
+**📖 Reference:** [pandas.DataFrame.to_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html) — Used to export structured data to CSV format for reproducibility.
 
-3. Validate and label each DataFrame
-
-4. Save combined data to the data/ folder with filenames formatted as YYYYMMDD-HHMMSS.csv
-
-**Key Concepts:**
-
-- Defensive programming (e.g. fallback tickers, empty DataFrame checks)
-
-- UTC timestamping for reproducibility
-
-- Use of pandas and yfinance for data handling
+**📖 Reference:** [datetime Module](https://docs.python.org/3/library/datetime.html) — Used to generate UTC timestamps for filenames and logs.
 
 ## Behaviour and File Naming
 
@@ -95,7 +127,7 @@ Running this notebook code will generate a CSV file in the `data/` folder with a
 
 **Objective:** Visualise the closing prices of all FAANG tickers on a single plot using the most recent CSV file.
 
-**Steps:**
+**Workflow:**
 
 1. Load the latest CSV from the data/ folder
 
@@ -105,17 +137,23 @@ Running this notebook code will generate a CSV file in the `data/` folder with a
 
 4. Save the plot to the plots/ folder as YYYYMMDD-HHMMSS.png
 
+**📖 Reference:** [matplotlib.pyplot.plot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html) — Used to generate line plots of closing prices.
+
+**📖 Reference:** [seaborn.set_style](https://seaborn.pydata.org/generated/seaborn.set_style.html) — Used to apply consistent visual styling across plots.
+
 **Key Concepts:**
 
 - Data filtering by ticker
-
 - Plot styling and layout
-
 - Saving plots programmatically
 
 ## Output file
 
 Running this notebook code will generate a png file in the `plots/` folder with a name similar to `20251105-220824.png`, containing the fetched hourly OHLCV data for the FAANG tickers.  Every time the code section is run, a new timestamped plot image of type 'png' will be created.
+
+example of generated plot:
+
+![FAANG Closing Prices](plots/20251107-161049.png)
 
 ---
 
@@ -123,9 +161,25 @@ Running this notebook code will generate a png file in the `plots/` folder with 
 
 **Objective:** Convert the notebook logic into a standalone Python script (faang.py) that can be run from the command line.
 
-## 🧾 Script : `faang.py`
+**🧾 Script:** `faang.py`
 
-This script automates the process of downloading and visualising hourly stock data for FAANG companies (Meta, Apple, Amazon, Netflix, Google). It mirrors the logic developed in the notebook and is designed for command-line use.
+This script replicates the notebook logic for use in terminal environments or CI pipelines.
+
+**Features:**
+
+- Fetches and saves hourly FAANG data
+- Generates and saves comparative plots
+- Supports CLI flags for flexible execution
+
+**📖 Reference:** [argparse — CLI Argument Parsing](https://docs.python.org/3/library/argparse.html) — Used to implement command-line flags like --no-download, --outdir, and --no-display.
+
+**CLI Flags:**
+
+--no-download — Use latest CSV without fetching new data
+
+--outdir — Specify custom output directory
+
+--no-display — Suppress plot display (for headless execution)
 
 **Script Features:**
 
@@ -133,112 +187,34 @@ This script automates the process of downloading and visualising hourly stock da
 
 - Generates and saves a comparative plot
 
-- Supports CLI flags:
+### How Script Was Designed
 
---no-download: Use latest CSV without fetching new data
+#### Step 1: Copied modular functions from the notebook into faang.py
 
---outdir: Specify custom output directory
+**Reason:**  It is essential to copy modular functions from the notebook into the script to ensure that the core logic for fetching, processing, and visualising data is preserved. This allows for code reuse and maintains consistency between the notebook and the script.
+[Modular Functions in Python](https://realpython.com/python-modules-packages/) — Structuring Python Code with Modules and Packages
 
---no-display: Suppress plot display (for automation)
+#### Step 2: Integrated argument parsing using argparse
 
-### 🧱 Steps Taken in the Script
+**Reason**:  Integrating argument parsing allows users to customize script behaviour via command-line flags, enhancing flexibility and usability in different environments.
+[Command-line argument parsing](https://docs.python.org/3/library/argparse.html) — Command-line argument parsing
 
-1. **Define Canonical Tickers**
-   - A default list of FAANG tickers is defined and deduplicated.
-   - If a custom list is provided globally, it is validated and used instead.
+#### Step 3: Mapped notebook steps to script functions
 
-2. **Fetch Hourly Data**
-   - The `fetch_hourly_history()` function retrieves 5 days of hourly OHLCV data for each ticker using the `yfinance` API.
-   - Each DataFrame is labelled with its ticker and validated to ensure it's not empty.
+**Reason**:  Mapping notebook steps to discrete functions in the script improves code organization, readability, and maintainability. Each function encapsulates a specific task, making it easier to test and modify individual components without affecting the overall workflow.
+[Mapping Functions in Python](https://realpython.com/python-modules-packages/) — Structuring Python Code with Modules and Packages
 
-3. **Save Data to CSV**
-   - Valid data is combined and saved to a timestamped CSV file in the `data/` folder.
-   - UTC timestamps are used for reproducibility and logging.
+#### Step 4: Added CLI flags for flexible execution
 
-4. **Generate Plot**
-   - The `plot_data()` function reads the latest CSV and plots the closing prices for all tickers.
-   - The plot includes axis labels, a legend, and a UTC timestamped title.
-   - The image is saved to the `plots/` folder.
+**Reason**:  Adding CLI flags allows users to customise the script's behavior without modifying the code. This is particularly useful for adapting the script to different environments or use cases.
+[CLI Argument Parsing](https://docs.python.org/3/library/argparse.html) — Command-line argument parsing
 
-5. **Support CLI Flags**
-   - `--no-download`: Skips data fetching and uses the latest CSV
-   - `--outdir`: Specifies a custom output directory
-   - `--no-display`: Suppresses plot display (useful for automation)
+#### Step 5: Tested script in terminal and Codespaces environments
 
-6. **Run as Executable**
-   - The script includes a shebang line and can be run directly from the terminal.
-   - Example usage:
-     ```bash
-     ./faang.py
-     python faang.py --no-download --outdir ./custom_data --no-display
-     ```
+**Reason**:  Testing the script in various environments ensures its reliability and helps identify any environment-specific issues.
+[Testing Scripts in Different Environments](https://realpython.com/python-modules-packages/) — Structuring Python Code with Modules and Packages
 
-### Run file in Codespaces
+#### Step 6: Documented usage in this README
 
-As file **faang.py** is already in the repository, simply open the Codespaces terminal and view repository structure to confirm file is present.  Change permission to make executable if required using the steps below:
-
-https://www.geeksforgeeks.org/linux-unix/chmod-command-linux/
-
-1. Check file permissions for **faang.py** using command
-
-```bash
-ls -l
-```
-Output should show something like:
-*-rw-rw-rw-  1 codespace root 5333 Nov 6 11:26 faang.py*
-**This indicates the file is not executable.**
-
-
-2. If not executable, run command to add execute permissions:
-```bash
-chmod u+x faang.py
-```
-
-repeat step 1 to confirm permissions changed in **faang.py**:
-```bash
-ls -l
-```
-Output should now show something like:
-*-rw-rwx-rw-  1 codespace root 5333 Nov  6 11:26 faang.py*
-**This indicates the file is now executable.**
-
-3. Run the script:
-```bash
-./faang.py
-```
-
-## 🤖 Problem 4: Automation
-
-**Objective:** Automate the script using GitHub Actions to run every Saturday morning.
-
-**Steps:**
-
-1. Create a workflow file: .github/workflows/faang.yml
-
-2. Schedule the job using a cron expression (0 6 * * 6)
-
-3. Install dependencies and run faang.py with appropriate flags
-
-4. Save outputs to the repository or configured storage
-
-**Key Concepts:**
-
-- CI/CD with GitHub Actions
-
-- Scheduled automation using cron syntax
-
-- Headless execution of CLI scripts
-
----
-
-## References and Further Reading
-
-- [yfinance documentation](https://github.com/ranaroussi/yfinance)
-- [pandas documentation](https://pandas.pydata.org/docs/)
-- [matplotlib documentation](https://matplotlib.org/stable/contents.html)
-- [seaborn documentation](https://seaborn.pydata.org/)
-- [PEP 8 (code style)](https://peps.python.org/pep-0008/)
-- [Real Python](https://realpython.com/) — articles on imports, file I/O, and constants
-
----
-**Licence:** See repository `LICENSE` file.
+**Reason**:  Documenting usage instructions helps users understand how to run and utilise the script effectively.
+[Documentation Best Practices](https://realpython.com/documenting-python-code/) — Documenting Python Code
