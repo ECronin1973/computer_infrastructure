@@ -6,8 +6,8 @@ This repository provides a Jupyter notebook and supporting code for fetching, in
 
 ## Repository Structure
 
-- `notebooks/problems.ipynb` — Primary notebook, organised into modular steps (environment verification, fetch & save, load, plot)
-- `scripts/faang.py` — Standalone script for fetching and plotting FAANG data
+- `problems.ipynb` — Primary notebook, organised into modular steps (environment verification, fetch & save, load, plot)
+- `faang.py` — Standalone script for fetching and plotting FAANG data
 - `data/` — Timestamped CSV outputs (e.g., `20251105-220824.csv`)
 - `plots/` — Generated PNG visualisations (e.g., `20251105-220824.png`)
 - `requirements.txt` — List of Python packages for environment setup
