@@ -85,6 +85,10 @@ This repository is intended for computing students and professionals with some e
 
 - Supports both timestamped and non-timestamped filenames via configuration flags
 
+## Output file
+
+Running this notebook code will generate a CSV file in the `data/` folder with a name similar to `20251105-220824.csv`, containing the fetched hourly OHLCV data for the FAANG tickers.  Every time the notebook is run, a new timestamped CSV will be created unless the non-timestamped option is selected.
+
 ---
 
 ## 📊 Problem 2: Plotting Data
@@ -108,6 +112,10 @@ This repository is intended for computing students and professionals with some e
 - Plot styling and layout
 
 - Saving plots programmatically
+
+## Output file
+
+Running this notebook code will generate a png file in the `plots/` folder with a name similar to `20251105-220824.png`, containing the fetched hourly OHLCV data for the FAANG tickers.  Every time the code section is run, a new timestamped plot image of type 'png' will be created.
 
 ---
 
@@ -167,9 +175,11 @@ This script automates the process of downloading and visualising hourly stock da
 
 ### Run file in Codespaces
 
-As file **faang.py** is already in the repository, simply open the Codespaces terminal and view repository structure to confirm file is present.
+As file **faang.py** is already in the repository, simply open the Codespaces terminal and view repository structure to confirm file is present.  Change permission to make executable if required using the steps below:
 
-1. Check file permissions using command
+https://www.geeksforgeeks.org/linux-unix/chmod-command-linux/
+
+1. Check file permissions for **faang.py** using command
 
 ```bash
 ls -l
@@ -184,7 +194,7 @@ Output should show something like:
 chmod u+x faang.py
 ```
 
-repeat step 1 to confirm permissions changed:
+repeat step 1 to confirm permissions changed in **faang.py**:
 ```bash
 ls -l
 ```
