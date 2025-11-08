@@ -23,52 +23,123 @@ git clone https://github.com/ECronin1973/computer_infrastructure.git
 cd computer_infrastructure
 ```
 
-## 🔧 Environment Setup Instructions
+### Command Line Interface
 
-To run the notebook and script successfully, follow these steps to set up your Python environment:
+**What is CLI?**
+
+CLI (Command Line Interface) is a text-based interface where users interact with the operating system by typing commands into a terminal or console.
+
+https://www.geeksforgeeks.org/operating-systems/difference-between-cli-and-gui/
+
+The repository includes a command-line interface (CLI) for fetching and visualising FAANG stock data. 
+
+You can run the notebook `problems.ipynb` using Jupyter Notebook or JupyterLab.
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-1. **Install Python 3.10+**  
-   Ensure Python is installed and available in your system path.  
-   [📖 Reference: Installing Python](https://realpython.com/installing-python/)
+python problems.ipynb
+```
 
-2. **Create a virtual environment (recommended):**
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   ```
+**Run all cells sequentially to execute the data fetching and plotting steps.**
 
-## To Run the Notebook
-3. **Install required packages:**
+You can run the CLI script `faang.py` with the following command:
+
+```bash
+./faang.py
+```
+
+## 🔧 Github Codespaces
+
+GitHub Codespaces is a cloud-based development environment that offers a full-fledged development experience directly from your web browser or Visual Studio Code. It integrates seamlessly with GitHub.
+
+https://www.geeksforgeeks.org/git/github-codespaces/
+
+## 🔧 Environment Setup Instructions
+
+To run the notebook and script successfully, choose one of the following setup options based on your development environment:
+
+---
+
+### 🧭 Option 1: GitHub Codespaces (Recommended for Cloud Development)
+
+GitHub Codespaces is a cloud-hosted development environment that lets you code directly from a browser or Visual Studio Code. It’s tightly integrated with GitHub and designed to eliminate the need for local setup.
+
+#### Steps:
+1. **Open the repository in Codespaces**  
+   Use the “Code” dropdown on GitHub → “Codespaces” → “Create codespace on main”.
+
+2. **Install required packages**  
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Launch Jupyter Notebook:**
-   ```bash
-   jupyter notebook problems.ipynb
-   ```
+3. **check notebook / script permissions**
+```bash
+ls -l
+```
 
-5. **Run the notebook cells sequentially.**
+4. **Run the script to add executable permissions (if required)**
+```bash
+chmod +x faang.py
+or
+chmod +x problems.ipynb
+```
 
-## To Run the Script faang.py
-6. **Make the script executable (if necessary):**
-   ```bash
-   chmod u+x faang.py
-   ```
+5. **Run the notebook or script**
+```bash
+jupyter notebook problems.ipynb
+```
+or
+```bash
+./faang.py
+```
 
-7. **Execute the script:**
-   ```bash
-   ./faang.py
-   ```
+**💡 Codespaces uses Linux-based terminals, so chmod and ./scriptname work as expected.**
 
-💡 If you're using **GitHub Codespaces**, open the terminal and follow the same script execution steps with file. Use chmod u+x faang.py if the file is not yet executable.
+📖 Reference: [GitHub Codespaces Overview](https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces)
 
-**📖 Reference:** [chmod Command — GeeksforGeeks](https://www.geeksforgeeks.org/linux-unix/chmod-command-linux/) — Used to modify file permissions for script execution.
+
+### 🧪 Option 2: Local Virtual Environment (Recommended for Local Development)
+
+A virtual environment isolates your Python dependencies per project. This avoids conflicts and keeps your global Python installation clean.
+
+Steps:
+1. Install Python 3.10+ Make sure Python is installed and available in your system path. 
+
+📖 Reference: [Installing Python — Real Python](https://realpython.com/installing-python/)
+
+2. Create and activate a virtual environment
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
+
+3. Install required packages
+```bash
+pip install -r requirements.txt
+```
+
+4. **Run the script to add executable permissions (if required)**
+```bash
+chmod +x faang.py
+or
+chmod +x problems.ipynb
+```
+
+5. **Run the notebook or script**
+```bash
+jupyter notebook problems.ipynb
+```
+or
+```bash
+./faang.py
+```
+
+📖 Reference: [Python Virtual Environments — Real Python](https://realpython.com/python-virtual-environments/) 
+
+📖 Reference: [chmod Command — GeeksforGeeks](https://www.geeksforgeeks.org/chmod-command-linux-examples/)
 
 ---
+
 
 ### 📚 Background: Accessing Market Data with yfinance
 
