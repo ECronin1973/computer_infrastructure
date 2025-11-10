@@ -3,6 +3,22 @@
 📈 FAANG Stock Data — Hourly Analysis
 This repository provides a Jupyter notebook and supporting code for fetching, inspecting, and visualising hourly OHLCV stock data for the FAANG companies (Meta, Apple, Amazon, Netflix, and Alphabet). It is based on the [Assessment Problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md) for the [ATU Computer Infrastructure module 2025–2026](https://vlegalwaymayo.atu.ie/course/view.php?id=13109).
 
+## Table of Contents
+- [Repository Structure](#repository-structure)
+- [Download Repository](#download-repository)
+- [Environment Setup Instructions](#-environment-setup-instructions)
+  - [Option 1: GitHub Codespaces (Recommended for Cloud Development)](#-option-1-github-codespaces-recommended-for-cloud-development)
+  - [Option 2: Local Virtual Environment (Recommended for Local Development)](#-option-2-local-virtual-environment-recommended-for-local-development) 
+- [Background: Accessing Market Data with yfinance](#-background-accessing-market-data-with-yfinance)
+- [Target Audience](#-target-audience)
+- [Problem 1: Fetch Hourly FAANG Data](#-problem-1-fetch-hourly-faang-data)
+   - [Behaviour and File Naming](#-behaviour-and-file-naming)
+   - [Problem 1 OUTPUT file](#problem-1-output-file)
+- [Problem 2: Plotting Data](#-problem-2-plotting-data)
+   - [Problem 2 OUTPUT file](#problem-2-output-file)
+- [Problem 3: Script](#-problem-3-script)
+   - [How Script Was Designed](#-how-script-was-designed)
+
 ---
 
 ## Repository Structure
@@ -43,8 +59,8 @@ python problems.ipynb
 
 You can run the CLI script `faang.py` with the following command:
 
-```bash
-./faang.py
+```python
+python faang.py
 ```
 
 ## 🔧 Github Codespaces
@@ -188,7 +204,7 @@ This repository is designed for computing students and professionals with interm
 
 - Supports both timestamped and non-timestamped filenames via configuration flags
 
-## Output file
+## Problem 1 OUTPUT file
 
 Running this notebook code will generate a CSV file in the `data/` folder with a name similar to `20251105-220824.csv`, containing the fetched hourly OHLCV data for the FAANG tickers.  Every time the notebook is run, a new timestamped CSV will be created unless the non-timestamped option is selected.
 
@@ -218,7 +234,7 @@ Running this notebook code will generate a CSV file in the `data/` folder with a
 - Plot styling and layout
 - Saving plots programmatically
 
-## Output file
+## Problem 2 OUTPUT file
 
 Running this notebook code will generate a png file in the `plots/` folder with a name similar to `20251105-220824.png`, containing the fetched hourly OHLCV data for the FAANG tickers.  Every time the code section is run, a new timestamped plot image of type 'png' will be created.
 
