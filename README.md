@@ -1,163 +1,119 @@
-# FAANG Stock Analysis — Winter 25/26 Assessment
+# 📘 FAANG Stock Analysis — Assessment Notebook
 
-📈 FAANG Stock Data — Hourly Analysis
-This repository provides a Jupyter notebook and supporting code for fetching, inspecting, and visualising hourly OHLCV stock data for the FAANG companies (Meta, Apple, Amazon, Netflix, and Alphabet). It is based on the [Assessment Problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md) for the [ATU Computer Infrastructure module 2025–2026](https://vlegalwaymayo.atu.ie/course/view.php?id=13109).
-
-## Table of Contents
-- [Repository Structure](#repository-structure)
-- [Download Repository](#download-repository)
-- [Environment Setup Instructions](#-environment-setup-instructions)
-  - [Option 1: GitHub Codespaces (Recommended for Cloud Development)](#-option-1-github-codespaces-recommended-for-cloud-development)
-  - [Option 2: Local Virtual Environment (Recommended for Local Development)](#-option-2-local-virtual-environment-recommended-for-local-development) 
-- [Background: Accessing Market Data with yfinance](#-background-accessing-market-data-with-yfinance)
-- [Target Audience](#-target-audience)
-- [Problem 1: Fetch Hourly FAANG Data](#-problem-1-fetch-hourly-faang-data)
-   - [Behaviour and File Naming](#-behaviour-and-file-naming)
-   - [Problem 1 OUTPUT file](#problem-1-output-file)
-- [Problem 2: Plotting Data](#-problem-2-plotting-data)
-   - [Problem 2 OUTPUT file](#problem-2-output-file)
-- [Problem 3: Script](#-problem-3-script)
-   - [How Script Was Designed](#-how-script-was-designed)
+## 📑 Table of Contents
+1. [Background](#background)
+2. [Repository Setup](#repository-setup)
+3. [Environment Setup](#environment-setup)
+4. [Problem 1: Fetch Hourly FAANG Data](#problem-1-fetch-hourly-faang-data)
+5. [Problem 2: Plotting Data](#problem-2-plotting-data)
+6. [Problem 3: Script Creation](#problem-3-script-creation)
+7. [Problem 4: Automation with GitHub Actions](#problem-4-automation-with-github-actions)
 
 ---
 
-## Repository Structure
+## 📚 Background
 
-- `problems.ipynb` — Primary notebook, structured into modular steps for setup, data collection, loading, and plotting
-- `faang.py` — Standalone CLI script that mirrors the notebook logic
-- `data/` — Timestamped CSV outputs (e.g., `20251105-220824.csv`)
-- `plots/` — Generated PNG visualisations (e.g., `20251105-220824.png`)
-- `requirements.txt` — List of Python packages for environment setup
+This notebook supports the [Computer Infrastructure module assessment](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md) for ATU Winter 2025–2026. It focuses on collecting and visualising hourly stock data for the FAANG companies — Meta (META), Apple (AAPL), Amazon (AMZN), Netflix (NFLX), and Alphabet (GOOG) — using Python tools such as `yfinance`, `pandas`, `matplotlib`, and `seaborn`.
+
+The project is divided into four problems:
+- Problem 1: Fetch and save hourly data
+- Problem 2: Plot closing prices
+- Problem 3: Convert logic into a CLI script
+- Problem 4: Automate execution using GitHub Actions
 
 ---
 
-## Download Repository
-To download this repository, you can use the following command in your terminal:
+## 📥 Repository Setup
+
+To download and explore the repository:
 
 ```bash
 git clone https://github.com/ECronin1973/computer_infrastructure.git
 cd computer_infrastructure
 ```
 
-### Command Line Interface
+### 📁 Included Files
 
-**What is CLI?**
+- problems.ipynb — Jupyter notebook with modular steps for each problem
+- faang.py — CLI script with mirrored logic from the notebook
+- data/ — Folder for timestamped CSV files
+- plots/ — Folder for timestamped PNG plots
+- requirements.txt — Python dependencies
+- .github/workflows/faang.yml — (To be created) GitHub Actions workflow
 
-CLI (Command Line Interface) is a text-based interface where users interact with the operating system by typing commands into a terminal or console.
+### 🔧 Environment Setup
 
-https://www.geeksforgeeks.org/operating-systems/difference-between-cli-and-gui/
+To run the notebook and script successfully, choose one of the following setup options:
 
-The repository includes a command-line interface (CLI) for fetching and visualising FAANG stock data. 
+### 🧭 Option 1: GitHub Codespaces (Recommended)
 
-You can run the notebook `problems.ipynb` using Jupyter Notebook or JupyterLab.
+1. Open the repository in Codespaces → GitHub → Code dropdown → Codespaces → Create codespace on main
 
-```bash
-python problems.ipynb
-```
+2. Install required packages
 
-**Run all cells sequentially to execute the data fetching and plotting steps.**
-
-You can run the CLI script `faang.py` with the following command:
-
-```python
-python faang.py
-```
-
-## 🔧 Github Codespaces
-
-GitHub Codespaces is a cloud-based development environment that offers a full-fledged development experience directly from your web browser or Visual Studio Code. It integrates seamlessly with GitHub.
-
-https://www.geeksforgeeks.org/git/github-codespaces/
-
-## 🔧 Environment Setup Instructions
-
-To run the notebook and script successfully, choose one of the following setup options based on your development environment:
-
----
-
-### 🧭 Option 1: GitHub Codespaces (Recommended for Cloud Development)
-
-GitHub Codespaces is a cloud-hosted development environment that lets you code directly from a browser or Visual Studio Code. It’s tightly integrated with GitHub and designed to eliminate the need for local setup.
-
-#### Steps:
-1. **Open the repository in Codespaces**  
-   Use the “Code” dropdown on GitHub → “Codespaces” → “Create codespace on main”.
-
-2. **Install required packages**  
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **check notebook / script permissions**
-```bash
-ls -l
-```
-
-4. **Run the script to add executable permissions (if required)**
-```bash
-chmod +x faang.py
-or
-chmod +x problems.ipynb
-```
-
-5. **Run the notebook or script**
-```bash
-jupyter notebook problems.ipynb
-```
-or
-```bash
-./faang.py
-```
-
-**💡 Codespaces uses Linux-based terminals, so chmod and ./scriptname work as expected.**
-
-📖 Reference: [GitHub Codespaces Overview](https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces)
-
-
-### 🧪 Option 2: Local Virtual Environment (Recommended for Local Development)
-
-A virtual environment isolates your Python dependencies per project. This avoids conflicts and keeps your global Python installation clean.
-
-Steps:
-1. Install Python 3.10+ Make sure Python is installed and available in your system path. 
-
-📖 Reference: [Installing Python — Real Python](https://realpython.com/installing-python/)
-
-2. Create and activate a virtual environment
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-```
-
-3. Install required packages
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Run the script to add executable permissions (if required)**
+3. Check file permissions
+
+```bash
+ls -l
+```
+
+4. Make scripts executable (if needed)
+
 ```bash
 chmod +x faang.py
-or
-chmod +x problems.ipynb
 ```
 
-5. **Run the notebook or script**
+5. Run the notebook or script
+
 ```bash
 jupyter notebook problems.ipynb
+./faang.py --plot
 ```
-or
+
+📖 Reference: [GitHub Codespaces Overview](https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces)
+
+### 🧭 Option 2: Local Python Environment
+
+1. Install Python 3.10+ 
+
+📖 [Installing Python — Real Python](https://realpython.com/installing-python/)
+
+2. Create and activate a virtual environment
+
 ```bash
-./faang.py
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+```
+3. Install dependencies
+
+```bash
+pip install -r requirements.txt
 ```
 
-📖 Reference: [Python Virtual Environments — Real Python](https://realpython.com/python-virtual-environments/) 
+4. Make scripts executable (if needed)
 
-📖 Reference: [chmod Command — GeeksforGeeks](https://www.geeksforgeeks.org/chmod-command-linux-examples/)
+```bash
+chmod +x faang.py
+```
 
----
+5. Run the notebook or script
 
+```bash
+jupyter notebook problems.ipynb
+./faang.py --plot
+```
+📖 References:
 
-### 📚 Background: Accessing Market Data with yfinance
+[Python Virtual Environments — Real Python](https://realpython.com/python-virtual-environments-a-primer/).  
+*This shows how to create and manage virtual environments for Python projects.*
+
+[chmod Command — GeeksforGeeks](https://www.geeksforgeeks.org/chmod-command-in-linux-with-examples/).  *This explains how to use the chmod command to change file permissions in Unix-like operating systems.*
+
+## 📚 Background: Accessing Market Data with yfinance
 
 This project uses [`yfinance`](https://github.com/ranaroussi/yfinance) to retrieve hourly OHLCV data from Yahoo Finance.
 
@@ -168,140 +124,112 @@ This project uses [`yfinance`](https://github.com/ranaroussi/yfinance) to retrie
 - Returns pandas-compatible DataFrames
 - Ideal for exploratory analysis and educational use
 
-**📖 Reference:** [yfinance documentation](https://pypi.org/project/yfinance/) — Used to fetch financial data programmatically via the Yahoo Finance API.
+📖 Reference: [yfinance documentation](https://pypi.org/project/yfinance/)
 
 > ⚠️ Note: `yfinance` is not affiliated with or endorsed by Yahoo Inc. Use it only for educational or research purposes.
 
 ---
 
 ## 🎯 Target Audience
-This repository is designed for computing students and professionals with intermediate Python skills. Familiarity with pandas, matplotlib, and basic CLI usage is recommended. The notebook includes environment checks, helper functions, and modular steps to support reproducibility and automation.
 
-**📖 Reference:** [Real Python — CLI Scripts](https://realpython.com/python-command-line-interfaces/) — Used to design and implement command-line flags in faang.py.
+This repository is designed for computing students and professionals with intermediate Python skills ([Real Python](https://realpython.com/intermediate-python/)). Familiarity with pandas ([docs](https://pandas.pydata.org/docs/)), matplotlib ([docs](https://matplotlib.org/stable/users/index.html)), and basic CLI usage ([Real Python CLI Guide](https://realpython.com/ref/stdlib/argparse/)) is recommended. The notebook includes environment checks, helper functions, and modular steps ([Real Python Modules](https://realpython.com/python-modules-packages/)) to support reproducibility and automation.
 
 ---
 
-### 🧪 Problem 1: Fetch Hourly FAANG Data
+## 🧪 Problem 1: Fetch Hourly FAANG Data
 
-**Objective:** Fetch hourly OHLCV data for the five FAANG tickers using the yfinance package and save the results as timestamped CSV files.
+### 🎯 Objective
 
-## Workflow:
+Use the `yfinance` package to fetch 5 days of hourly OHLCV data for the FAANG tickers and save the results to a timestamped CSV file.
+
+### ⚙️ Workflow
 
 - Define and validate the FAANG ticker list
-- Use fetch_hourly_history() to retrieve 5 days of hourly data per ticker
+- Use `fetch_hourly_history()` to retrieve data
 - Label and clean each DataFrame
-- Save combined data to a timestamped CSV file
+- Concatenate and save to `data/YYYYMMDD-HHMMSS.csv`
 
-**📖 Reference:** [pandas.DataFrame.to_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html) — Used to export structured data to CSV format for reproducibility.
+### 📤 Output File
 
-**📖 Reference:** [datetime Module](https://docs.python.org/3/library/datetime.html) — Used to generate UTC timestamps for filenames and logs.
+- Format: `data/YYYYMMDD-HHMMSS.csv`
+- Example: `data/20251105-220824.csv`
 
-## Behaviour and File Naming
-
-- Timestamp format (UTC) for CSVs: `YYYYMMDD-HHMMSS` (e.g., `20251105-220824.csv`)
-
-- Default behaviour is conservative (no overwrite); toggle flags are available in the notebook to change this
-
-- Supports both timestamped and non-timestamped filenames via configuration flags
-
-## Problem 1 OUTPUT file
-
-Running this notebook code will generate a CSV file in the `data/` folder with a name similar to `20251105-220824.csv`, containing the fetched hourly OHLCV data for the FAANG tickers.  Every time the notebook is run, a new timestamped CSV will be created unless the non-timestamped option is selected.
+📖 References:  
+- [pandas.DataFrame.to_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html)  
+- [datetime Module](https://docs.python.org/3/library/datetime.html)
 
 ---
 
 ## 📊 Problem 2: Plotting Data
 
-**Objective:** Visualise the closing prices of all FAANG tickers on a single plot using the most recent CSV file.
+### 🎯 Objective
 
-**Workflow:**
+Visualise the closing prices of all FAANG tickers using the most recent CSV file.
 
-1. Load the latest CSV from the data/ folder
+### ⚙️ Workflow
 
-2. Plot the Close prices for each ticker using matplotlib and seaborn
+1. Load the latest CSV from the `data/` folder  
+2. Plot the `Close` prices for each ticker using `matplotlib` and `seaborn`  
+3. Add axis labels, a legend, and a UTC timestamped title  
+4. Save the plot to `plots/YYYYMMDD-HHMMSS.png`
 
-3. Add axis labels, a legend, and a UTC timestamped title
+### 📤 Output File
 
-4. Save the plot to the plots/ folder as YYYYMMDD-HHMMSS.png
+- Format: `plots/YYYYMMDD-HHMMSS.png`
+- Example: `plots/20251105-220824.png`
 
-**📖 Reference:** [matplotlib.pyplot.plot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html) — Used to generate line plots of closing prices.
+![Example Plot](plots/20251111-082901.png)
 
-**📖 Reference:** [seaborn.set_style](https://seaborn.pydata.org/generated/seaborn.set_style.html) — Used to apply consistent visual styling across plots.
-
-**Key Concepts:**
-
-- Data filtering by ticker
-- Plot styling and layout
-- Saving plots programmatically
-
-## Problem 2 OUTPUT file
-
-Running this notebook code will generate a png file in the `plots/` folder with a name similar to `20251105-220824.png`, containing the fetched hourly OHLCV data for the FAANG tickers.  Every time the code section is run, a new timestamped plot image of type 'png' will be created.
-
-example of generated plot:
-
-![FAANG Closing Prices](plots/20251107-161049.png)
+📖 References:  
+- [matplotlib.pyplot.plot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html)  
+- [seaborn.set_style](https://seaborn.pydata.org/generated/seaborn.set_style.html)
 
 ---
 
-## 🐍 Problem 3: Script
+## 🐍 Problem 3: Script Creation (`faang.py`)
 
-**Objective:** Convert the notebook logic into a standalone Python script (faang.py) that can be run from the command line.
+### 🎯 Objective
 
-**🧾 Script:** `faang.py`
+Convert the notebook logic into a standalone Python script that can be executed from the terminal.
 
-This script replicates the notebook logic for use in terminal environments or CI pipelines.
+### 🧾 Script: `faang.py`
 
-**Features:**
+This script replicates the notebook logic and supports flexible execution via command-line flags.
+
+### ✅ Features
 
 - Fetches and saves hourly FAANG data
 - Generates and saves comparative plots
 - Supports CLI flags for flexible execution
 
-**📖 Reference:** [argparse — CLI Argument Parsing](https://docs.python.org/3/library/argparse.html) — Used to implement command-line flags like --no-download, --outdir, and --no-display.
+### 🧩 CLI Flags
 
-**CLI Flags:**
+- `--plot` — Generate and save a plot after fetching data  
+- `--overwrite` — Allow overwriting an existing CSV file  
+- `--show` — Display the plot after saving
 
---no-download — Use latest CSV without fetching new data
+📖 Reference: [argparse — CLI Argument Parsing](https://docs.python.org/3/library/argparse.html)
 
---outdir — Specify custom output directory
+---
 
---no-display — Suppress plot display (for headless execution)
+### 🛠️ Script Design Process
 
-**Script Features:**
+- ✅ Copied modular functions from the notebook into `faang.py`  
+  📖 [Modular Functions in Python](https://realpython.com/python-modules-packages/)
 
-- Fetches and saves hourly data using yfinance
+- ✅ Integrated `argparse` to support CLI flags  
+  📖 [argparse Documentation](https://docs.python.org/3/library/argparse.html)
 
-- Generates and saves a comparative plot
+- ✅ Mapped notebook steps to discrete functions for clarity and reuse  
+  📖 [Python Modules and Packages](https://realpython.com/python-modules-packages/)
 
-### How Script Was Designed
+- ✅ Added CLI flags for flexible execution in different environments
 
-#### Step 1: Copied modular functions from the notebook into faang.py
+- ✅ Tested the script in both terminal and GitHub Codespaces environments
 
-**Reason:**  It is essential to copy modular functions from the notebook into the script to ensure that the core logic for fetching, processing, and visualising data is preserved. This allows for code reuse and maintains consistency between the notebook and the script.
-[Modular Functions in Python](https://realpython.com/python-modules-packages/) — Structuring Python Code with Modules and Packages
+- ✅ Documented usage and functionality in this README  
+  📖 [Documenting Python Code](https://realpython.com/documenting-python-code/)
 
-#### Step 2: Integrated argument parsing using argparse
+---
 
-**Reason**:  Integrating argument parsing allows users to customize script behaviour via command-line flags, enhancing flexibility and usability in different environments.
-[Command-line argument parsing](https://docs.python.org/3/library/argparse.html) — Command-line argument parsing
-
-#### Step 3: Mapped notebook steps to script functions
-
-**Reason**:  Mapping notebook steps to discrete functions in the script improves code organization, readability, and maintainability. Each function encapsulates a specific task, making it easier to test and modify individual components without affecting the overall workflow.
-[Mapping Functions in Python](https://realpython.com/python-modules-packages/) — Structuring Python Code with Modules and Packages
-
-#### Step 4: Added CLI flags for flexible execution
-
-**Reason**:  Adding CLI flags allows users to customise the script's behavior without modifying the code. This is particularly useful for adapting the script to different environments or use cases.
-[CLI Argument Parsing](https://docs.python.org/3/library/argparse.html) — Command-line argument parsing
-
-#### Step 5: Tested script in terminal and Codespaces environments
-
-**Reason**:  Testing the script in various environments ensures its reliability and helps identify any environment-specific issues.
-[Testing Scripts in Different Environments](https://realpython.com/python-modules-packages/) — Structuring Python Code with Modules and Packages
-
-#### Step 6: Documented usage in this README
-
-**Reason**:  Documenting usage instructions helps users understand how to run and utilise the script effectively.
-[Documentation Best Practices](https://realpython.com/documenting-python-code/) — Documenting Python Code
+## 🤖 Problem 4: Automation with GitHub Actions ( To Be Completed )
