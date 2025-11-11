@@ -140,6 +140,39 @@ This repository is designed for computing students and professionals with interm
 
 ---
 
+## 🧰 Helper Functions and Modular Design
+
+This project uses a set of modular helper functions defined directly within the notebook (`problems.ipynb`) and script (`faang.py`). While these functions are not stored in a separate helper file (like `utils.py`), they are structured and reused in a way that mirrors the benefits of a modular helper module.
+
+By adapting the logic into reusable functions within the main files, the project maintains clean separation of concerns, avoids code duplication, and supports both interactive and automated workflows — all without requiring external imports.
+
+### 🔧 Functions Used in This Project
+
+| Function | Purpose | Benefit | Reference |
+|----------|---------|---------|-----------|
+| `verify_environment(show_preview=True)` | Tests `yfinance` connectivity and optionally previews sample data. | Confirms the environment is ready before running the full workflow. | [yfinance Quickstart](https://pypi.org/project/yfinance/) |
+| `fetch_hourly_history(ticker)` | Retrieves 5 days of hourly OHLCV data for a single ticker. | Provides clean, labeled data for each FAANG stock. | [yfinance.Ticker.history](https://github.com/ranaroussi/yfinance) |
+| `save_hourly_data(tickers, output_dir, overwrite=False)` | Combines hourly data for multiple tickers and saves it to a timestamped CSV. | Enables reproducibility and version control of data outputs. | [pandas.DataFrame.to_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html) |
+| `load_latest_data(tickers, folder='data', show_preview=True)` | Loads the most recent CSV and splits it into separate DataFrames per ticker. | Supports targeted analysis and plotting by company. | [pandas.read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html) |
+
+---
+
+### 🧠 Why This Matters
+
+Although these functions are embedded within the main files rather than extracted into a standalone helper module, they are designed with the same principles in mind:
+
+- ✅ **Reusability** – Functions are called multiple times across notebook and script  
+- ✅ **Readability** – Each function has a clear, single responsibility  
+- ✅ **Maintainability** – Logic is easy to update without affecting unrelated parts  
+- ✅ **Scalability** – Functions can be moved to a helper file later if needed
+
+#### 📖 References:  
+- [Real Python – Python Modules and Packages](https://realpython.com/python-modules-packages/)  
+- [GeeksforGeeks – Python Helper Functions](https://www.geeksforgeeks.org/python-helper-functions/)  
+- [Wikipedia – DRY Principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+
+---
+
 ## 🧪 Problem 1: Fetch Hourly FAANG Data
 
 ### 🎯 Objective
