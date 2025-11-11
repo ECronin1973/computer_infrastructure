@@ -214,8 +214,6 @@ This script replicates the notebook logic and supports flexible execution via co
 
 📖 Reference: [argparse — CLI Argument Parsing](https://docs.python.org/3/library/argparse.html)
 
----
-
 ### 🛠️ Script Design Process
 
 - ✅ Copied modular functions from the notebook into `faang.py`  
