@@ -23,7 +23,7 @@ The project is divided into four problems:
 
 ---
 
-## 📥 Repository Setup
+## 📥 Download Repository
 
 To download and explore the repository:
 
@@ -41,7 +41,9 @@ cd computer_infrastructure
 - requirements.txt — Python dependencies
 - .github/workflows/faang.yml — (To be created) GitHub Actions workflow
 
-### 🔧 Environment Setup
+---
+
+## 🔧 Environment Setup
 
 To run the notebook and script successfully, choose one of the following setup options:
 
@@ -112,6 +114,8 @@ jupyter notebook problems.ipynb
 *This shows how to create and manage virtual environments for Python projects.*
 
 [chmod Command — GeeksforGeeks](https://www.geeksforgeeks.org/chmod-command-in-linux-with-examples/).  *This explains how to use the chmod command to change file permissions in Unix-like operating systems.*
+
+---
 
 ## 📚 Background: Accessing Market Data with yfinance
 
@@ -233,3 +237,5 @@ This script replicates the notebook logic and supports flexible execution via co
 ---
 
 ## 🤖 Problem 4: Automation with GitHub Actions ( To Be Completed )
+
+---
