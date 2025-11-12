@@ -4,11 +4,15 @@
 1. [Background](#background)
 2. [Repository Setup](#repository-setup)
 3. [Environment Setup](#environment-setup)
-4. [Problem 1: Fetch Hourly FAANG Data](#problem-1-fetch-hourly-faang-data)
-5. [Problem 2: Plotting Data](#problem-2-plotting-data)
-6. [Problem 3: Script Creation](#problem-3-script-creation)
-7. [Problem 4: Automation with GitHub Actions](#problem-4-automation-with-github-actions)
-
+4. [Included Files](#included-files)
+5. [Environment Setup](#environment-setup)
+6. [Accessing Market Data with yfinance](#accessing-market-data-with-yfinance)
+7. [Helper Functions and Modular Design](#helper-functions-and-modular-design)
+8. [Problem 1: Fetch Hourly FAANG Data](#problem-1-fetch-hourly-faang-data)
+9. [Problem 2: Plotting Data](#problem-2-plotting-data)
+10. [Problem 3: Script Creation](#problem-3-script-creation)
+11. [Problem 4: Automation with GitHub Actions](#problem-4-automation-with-github-actions)
+12. [Personal Reflection](#personal-reflection)
 ---
 
 ## 📚 Background
@@ -270,3 +274,12 @@ This script replicates the notebook logic and supports flexible execution via co
 ## 🤖 Problem 4: Automation with GitHub Actions ( To Be Completed )
 
 ---
+
+### Acknowledgements
+
+Copilot was used to assist with code generation and suggestions throughout this project.
+
+### Personal Reflection
+
+They say less is more and that is certainly true when it comes to writing code.  I used copilot to help me with this assignment and found that it often produced code that was too verbose and complicated for the task at hand.  By simplifying the code and focusing on the core functionality, I was able to create a more efficient and maintainable solution.  By reviewing weekly lectures, I was able to see what was being asked in a notebook, not cells full of extremely complicated code.  I was conscious of my audience. This experience has reinforced the importance of writing clean and concise code, and I will strive to apply this principle in my future coding endeavors.  I found the feedback very useful in helping me to identify areas where I could improve my code and I set out to ensure that my final submission reflected these improvements. I spent time refining my code to enhance its clarity and efficiency, ultimately leading to I hope, a more polished final submission.
+
