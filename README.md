@@ -19,8 +19,8 @@
 8. [Problem 2: Plotting Data](#problem-2-plotting-data)  
 9. [Problem 3: Script Creation](#problem-3-script-creation)  
 10. [Problem 4: Automation with GitHub Actions](#problem-4-automation-with-github-actions)  
-11. [Analysis](#analysis)  
-12. [Reviewer Checklist](#reviewer-checklist)  
+11. [Analysis Optional](#analysis-optional)  
+12. [Acknowledgements](#acknowledgements)
 13. [Personal Reflection](#personal-reflection)  
 
 ---
@@ -152,6 +152,7 @@ This project uses [`yfinance`](https://github.com/ranaroussi/yfinance) to retrie
 > ⚠️ Note: `yfinance` is not affiliated with or endorsed by Yahoo Inc. Use it only for educational or research purposes.
 
 ### 🔍 Clarification on “Close”
+
 - In this project, the **Close** column represents the **hourly closing price** at the end of each trading interval, not the single consolidated daily close.  
 - On weekdays when markets are open, the program captures hourly closes intraday.  
 - On weekends or holidays, no new hourly data is available, so the latest file stops at the **final close of the last trading session** (e.g., Friday’s market close).  
@@ -288,8 +289,6 @@ What It Shows:
 - Intraday volatility across FAANG stocks.
 - Different absolute price ranges (e.g., AAPL vs. GOOG).
 - Title reflects the last available trading date.
-
-
 
 2. 📊 Normalised Comparison (Indexed to 100)
 
