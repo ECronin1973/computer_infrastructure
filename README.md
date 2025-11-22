@@ -11,24 +11,25 @@ This repository contains solutions to the four assessment problems for the ATU G
 ---
 
 ## 📑 Table of Contents
-1. [Background](#background)  
-2. [Repository Setup](#repository-setup)  
-3. [Environment Setup](#environment-setup)  
-4. [Included Files](#included-files)  
-5. [Accessing Market Data with yfinance](#accessing-market-data-with-yfinance)  
-6. [Helper Functions and Modular Design](#helper-functions-and-modular-design)  
-7. [Problem 1: Fetch Hourly FAANG Data](#problem-1-fetch-hourly-faang-data)  
-8. [Problem 2: Plotting Data](#problem-2-plotting-data)  
-9. [Problem 3: Script Creation](#problem-3-script-creation)  
-10. [Problem 4: Automation with GitHub Actions](#problem-4-automation-with-github-actions)  
-11. [Analysis Optional](#analysis-optional)  
-12. [Acknowledgements](#acknowledgements)
-13. [Personal Reflection](#personal-reflection)  
+1. [Background](#background)
+2. [Download repository](#download-repository)
+3. [Target audience](#target-audience)
+4. [Environment setup](#environment-setup)
+5. [Included files](#included-files)
+6. [Functions used in this project](#functions-used-in-this-project)
+7. [Helper Functions and Modular Design](#helper-functions-and-modular-design)
+8. [Problem 1: Fetch Hourly FAANG Data](#problem-1-fetch-hourly-faang-data)
+9. [Problem 2: Plotting Data](#problem-2-plotting-data)
+10. [Problem 3: Script Creation (`faang.py`)](#problem-3-script-creation-faangpy)
+11. [Problem 4: Automation with GitHub Actions (To Be Completed)](#problem-4-automation-with-github-actions-to-be-completed)
+12. [Analysis (optional)](#analysis-optional)
+13. [Acknowledgements](#acknowledgements)
+14. [Personal reflection](#personal-reflection)
 
 ---
 
 ### Background
-This notebook supports the ATU Winter 2025–2026 Computer Infrastructure module assessment (see [assessment problems(https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md)) and implements a reproducible pipeline to collect, persist, and visualise hourly FAANG stock data. It focuses on the following tickers: Meta (META), Apple (AAPL), Amazon (AMZN), Netflix (NFLX), and Alphabet (GOOG), using Python tooling: yfinance (data retrieval), pandas (data handling), matplotlib and seaborn (visualisation).
+This notebook supports the ATU Winter 2025–2026 Computer Infrastructure module assessment (see [assessment problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md)) and implements a reproducible pipeline to collect, persist, and visualise hourly FAANG stock data. It focuses on the following tickers: Meta (META), Apple (AAPL), Amazon (AMZN), Netflix (NFLX), and Alphabet (GOOG), using Python tooling: yfinance (data retrieval), pandas (data handling), matplotlib and seaborn (visualisation).
 
 The work maps directly to the module assessment tasks:
 
@@ -54,7 +55,7 @@ The work maps directly to the module assessment tasks:
 
 ---
 
-## 📥 Download Repository
+### Download Repository
 
 To download and explore the repository:
 
@@ -68,7 +69,7 @@ After cloning, you can either:
 - Execute the script directly with ./faang.py to fetch data and generate plots automatically.
 - outputs are automatically saved logically into data/ and plots/ folders.
 
-### 📁 Included Files
+### Included Files
 
 - [problems.ipynb](https://github.com/ECronin1973/computer_infrastructure/blob/main/problems.ipynb) — Interactive notebook with modular steps for each problem
 - [faang.py](https://github.com/ECronin1973/computer_infrastructure/blob/main/faang.py) — CLI script with mirrored logic from the notebook
@@ -78,12 +79,11 @@ After cloning, you can either:
 
 ---
 
-## 🔧 Environment Setup
+## Environment Setup
 
 To run the notebook and script successfully, choose one of the following setup options:
 
-### 🧭 Option 1: GitHub Codespaces (Recommended)
-
+### Option 1: GitHub Codespaces (Recommended)
 1. Open the repository in Codespaces → GitHub → Code dropdown → Codespaces → Create codespace on main
 
 2. Install required packages
@@ -115,7 +115,7 @@ jupyter notebook problems.ipynb
 
 📖 Reference: [GitHub Codespaces Overview](https://docs.github.com/en/codespaces/quickstart)
 
-### 🧭 Option 2: Local Python Environment
+### Option 2: Local Python Environment
 
 1. Install Python 3.10+ 
 
@@ -154,7 +154,7 @@ jupyter notebook problems.ipynb
 
 ---
 
-## 🎯 Target Audience
+## Target Audience
 
 This repository is designed for computing students and professionals with intermediate Python skills ([Real Python](https://realpython.com/intermediate-python/)). Familiarity with pandas ([docs](https://pandas.pydata.org/docs/)), matplotlib ([docs](https://matplotlib.org/stable/users/index.html)), and basic CLI usage ([Real Python CLI Guide](https://realpython.com/ref/stdlib/argparse/)) is recommended. The notebook includes environment checks, helper functions, and modular steps ([Real Python Modules](https://realpython.com/python-modules-packages/)) to support reproducibility and automation.
 
@@ -162,13 +162,13 @@ This repository is designed for computing students and professionals with interm
 
 ---
 
-## 🧰 Helper Functions and Modular Design
+## Helper Functions and Modular Design
 
 This project uses a set of modular helper functions defined directly within the notebook (`problems.ipynb`) and script (`faang.py`). While these functions are not stored in a separate helper file (like `utils.py`), they are structured and reused in a way that mirrors the benefits of a modular helper module.
 
 By adapting the logic into reusable functions within the main files, the project maintains clean separation of concerns, avoids code duplication, and supports both interactive and automated workflows — all without requiring external imports.
 
-### 🔧 Functions Used in This Project
+### Functions Used in This Project
 
 The following helper functions are defined in the notebook (`problems.ipynb`).  
 Additional functions, such as `plot_close_prices(data, output_dir)`, are implemented in the script (`faang.py`) to package the plotting logic for automation.
@@ -189,12 +189,12 @@ Additional functions, such as `plot_close_prices(data, output_dir)`, are impleme
 
 ---
 
-### 🧠 Why this matters
+### Why this matters
 
 These functions are designed for **reusability, readability, and transparency**. Their modular structure ensures reproducibility across both notebook and script, while making it easy for reviewers to see how each step fulfils the assessment requirements. Inline documentation and clear responsibilities mean the workflow can be maintained or scaled later without breaking consistency.
 
 
-#### 📖 References  
+#### References  
 - [Real Python – Python Modules and Packages](https://realpython.com/python-modules-packages/)  
 - [GeeksforGeeks – Python Helper Functions](https://www.geeksforgeeks.org/python-helper-functions/)  
 - [Wikipedia – DRY Principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)  
@@ -204,13 +204,13 @@ These functions are designed for **reusability, readability, and transparency**.
 
 ---
 
-## 🧪 Problem 1: Fetch Hourly FAANG Data
+## Problem 1: Fetch Hourly FAANG Data
 
-### 🎯 Objective
+### Objective
 Use the `yfinance` package to fetch **5 days of hourly OHLCV data** for the FAANG tickers and save the results to a timestamped CSV file.  
 This fulfils the **Problem 1 requirement** of the assessment.
 
-### ⚙️ Workflow
+### Workflow
 - Define and validate the FAANG ticker list (`META`, `AAPL`, `AMZN`, `NFLX`, `GOOG`).  
 - Use `fetch_hourly_history()` to retrieve hourly OHLCV data via `yfinance.Ticker.history`.  
 - Label each DataFrame with a `Ticker` column and clean the index (`Date`).  
@@ -219,7 +219,7 @@ This fulfils the **Problem 1 requirement** of the assessment.
 
 ### 📤 Output File
 - **Format:** `data/YYYYMMDD-HHMMSS.csv`  
-- **Example:** `data/20251105-220824.csv`  
+- **Example:** `data/20251122-162358.csv`  
 - A single combined CSV is saved per run, containing rows for all FAANG tickers.  
 - Each row includes OHLCV values plus a `Ticker` label for clarity.  
 - Filenames are timestamped for reproducibility and version control.
@@ -245,10 +245,10 @@ This fulfils the **Problem 2 requirement** of the assessment.
 
 ### 📤 Output File
 - **Format:** `plots/YYYYMMDD-HHMMSS.png`  
-- **Example:** `plots/20251105-220824.png`  
+- **Example:** `plots/20251122-162358.png`  
 - Each plot provides a clear visual comparison of FAANG hourly closes over the last five trading days.  
 
-![Example Plot](plots/20251116-140505.png)
+![Example Plot](plots/20251122-162358.png)
 
 📖 References:  
 - [pandas.read_csv](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)  
@@ -259,52 +259,52 @@ This fulfils the **Problem 2 requirement** of the assessment.
 ### Analysis (optional)
 These visuals extend beyond the assessment and are displayed inline in the notebook (not saved as PNGs). They build on the derived columns added in Step 6a (Return and RollingMean).
 
-#### Step 8 visualisations (8a–8e)
-**8a: Per‑ticker return distribution (histogram + KDE):**
+### Step 8 visualisations (8a–8e)
+
+#### 8a: Per‑ticker return distribution (histogram + KDE):
 
  For each ticker, hourly returns are computed with pct_change(), converted to numeric, and plotted using seaborn.histplot with a seaborn.kdeplot overlay. This highlights the distribution shape and volatility for each stock.
 
-**8b: Return distribution (remaining tickers):** 
+#### 8b: Return distribution (remaining tickers):
+  The histogram + KDE workflow repeats across all FAANG tickers, ensuring consistent comparison of hourly return behaviour and tail risk profiles across symbols.
 
-The histogram + KDE workflow repeats across all FAANG tickers, ensuring consistent comparison of hourly return behaviour and tail risk profiles across symbols.
+#### 8c: Cross‑ticker returns boxplot: 
 
-**8c: Cross‑ticker returns boxplot:** 
+  Returns for all tickers are assembled into a single DataFrame and plotted via seaborn.boxplot, summarising spread and outliers to compare volatility at a glance.
 
-Returns for all tickers are assembled into a single DataFrame and plotted via seaborn.boxplot, summarising spread and outliers to compare volatility at a glance.
+#### 8d: Rolling average overlays (per ticker): 
 
-**8d: Rolling average overlays (per ticker):** 
+  Each ticker’s raw Close series is plotted alongside a 30‑period rolling mean (rolling(window=30).mean()), using matplotlib line plots to reveal smoothed trends versus hourly noise.
 
-Each ticker’s raw Close series is plotted alongside a 30‑period rolling mean (rolling(window=30).mean()), using matplotlib line plots to reveal smoothed trends versus hourly noise.
+#### 8e: Notes on plotting style and previews: 
 
-**8e: Notes on plotting style and previews:** 
-
-Plots use a consistent white‑grid style (seaborn.set_style('whitegrid')), and the notebook includes previews and summaries before plotting to validate data integrity and shape.
+  Plots use a consistent white‑grid style (seaborn.set_style('whitegrid')), and the notebook includes previews and summaries before plotting to validate data integrity and shape.
 ---
 
-## 🐍 Problem 3: Script Creation (`faang.py`)
+## Problem 3: Script Creation (`faang.py`)
 
-### 🎯 Objective
+### Objective
 Convert the notebook logic into a standalone Python script that can be executed from the terminal.  
 This fulfils the **Problem 3 requirement** of the assessment.
 
-### 🧾 Script: `faang.py`
+### Script: `faang.py`
 The script replicates the notebook logic and supports flexible execution via command‑line flags.  
 It automatically saves outputs into the `data/` and `plots/` folders with timestamped filenames.
 
-### ✅ Features
+### Features
 - Fetches and saves hourly FAANG data (`save_hourly_data()`)  
 - Generates and saves comparative plots (`plot_close_prices()`)  
 - Supports CLI flags for flexible execution  
 - Titles plots with the **last available trading date** for consistency  
 
-### 🧩 CLI Flags
+### CLI Flags
 - `--plot` — Generate and save a plot after fetching data  
 - `--overwrite` — Allow overwriting an existing CSV file  
 - `--show` — Display the plot after saving  
 
 📖 Reference: [argparse — CLI Argument Parsing](https://docs.python.org/3/library/argparse.html)
 
-### 🛠️ Script Design Process
+### Script Design Process
 - ✅ Copied modular functions from the notebook into `faang.py`  
   📖 [Modular Functions in Python](https://realpython.com/python-modules-packages/)  
 
@@ -326,7 +326,7 @@ It automatically saves outputs into the `data/` and `plots/` folders with timest
 
 ---
 
-## 🤖 Problem 4: Automation with GitHub Actions ( To Be Completed )
+## Problem 4: Automation with GitHub Actions ( To Be Completed )
 
 ---
 

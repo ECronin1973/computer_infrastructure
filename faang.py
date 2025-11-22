@@ -25,7 +25,7 @@ import seaborn as sns
 # Execution controls
 # -----------------------
 # Set both to True when you want the script to fetch/save a new CSV or produce a plot.
-# Set one to False to skip that particular step
+# Set either to False to skip that particular step
 RUN_PROBLEM_1 = True   # Fetch and save a new combined CSV when True
 RUN_PROBLEM_2 = True   # Load latest CSV and produce plot when True
 
