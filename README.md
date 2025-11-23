@@ -1,6 +1,6 @@
 # 📘 Computer Infrastructure – FAANG Stock Analysis
 
-This repository contains solutions to the four assessment problems for the ATU Galway Computer Infrastructure module. It provides a transparent, reproducible pipeline to fetch hourly FAANG stock data for the last 5 trading days, save timestamped CSVs, and produce reviewer‑friendly plots that clearly state the last available trading date. Automation via GitHub Actions is supported to keep outputs fresh and reproducible.
+This repository demonstrates reproducible workflows for FAANG stock analysis, aligned with the ATU Galway Computer Infrastructure module assessment. It provides transparent pipelines for fetching, validating, and visualising hourly FAANG data, with clear documentation and reviewer guidance.
 
 **Author:** Edward Cronin  
 **Student ID:** g00425645  
@@ -29,29 +29,20 @@ This repository contains solutions to the four assessment problems for the ATU G
 ---
 
 ### Background
-This notebook supports the ATU Winter 2025–2026 Computer Infrastructure module assessment (see [assessment problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md)) and implements a reproducible pipeline to collect, persist, and visualise hourly FAANG stock data. It focuses on the following tickers: Meta (META), Apple (AAPL), Amazon (AMZN), Netflix (NFLX), and Alphabet (GOOG), using Python tooling: yfinance (data retrieval), pandas (data handling), matplotlib and seaborn (visualisation).
 
-The work maps directly to the module assessment tasks:
+This notebook supports the ATU Winter 2025–2026 Computer Infrastructure module assessment (see [assessment problems](https://github.com/ianmcloughlin/computer-infrastructure/blob/main/assessment/problems.md)).  
+It implements a reproducible pipeline to collect, persist, and visualise hourly FAANG stock data for Meta (META), Apple (AAPL), Amazon (AMZN), Netflix (NFLX), and Alphabet (GOOG).
 
-#### Problem 1 — Fetch and save hourly data
-- Download hourly OHLCV for each FAANG ticker covering the last 5 trading days (trading days, not calendar days).
-- Persist raw outputs as timestamped CSV files in data/ for reproducibility.
+The workflow maps directly to the module’s assessment tasks:
+- **Problem 1** — Fetch and save hourly FAANG data  
+- **Problem 2** — Plot closing prices  
+- **Problem 3** — Convert notebook logic into a CLI script  
+- **Problem 4** — Automate execution with GitHub Actions  
 
-#### Problem 2 — Plot closing prices
-- Load the latest CSV per ticker and plot hourly Close series on a single comparison chart.
-- Save reviewer‑friendly, timestamped PNGs to plots/. Chart titles explicitly display the last available trading session to avoid weekend/holiday ambiguity.
-
-#### Problem 3 — Convert logic into a CLI script
-- Encapsulate notebook logic into faang.py with flags such as --plot, --overwrite, and --show for repeatable, scriptable execution.
-
-#### Problem 4 — Automate execution using GitHub Actions
-- Provide a scheduled workflow (.github/workflows/faang.yml) that runs the script on a fixed cadence (for example, weekly) and commits updated CSVs and plots to the repository to produce a clear, auditable commit history.
-
-**Notes and assumptions**
-
-- “5 days” always refers to the last 5 trading sessions; running the notebook or script on weekends or market holidays will return data up to the most recent trading day because exchanges are closed.
-- Filenames are UTC timestamped and lexicographically sortable (format: TICKER_YYYYMMDD-HHmmss.csv) to allow deterministic “latest file” selection.
-- Helper functions and short Markdown explanation blocks are included throughout the notebook to document design choices, runtime flags, and reviewer considerations.
+**Notes and assumptions**  
+- “5 days” refers to the last 5 trading sessions; weekends/holidays return data up to the most recent trading day.  
+- Filenames are UTC timestamped and lexicographically sortable (`TICKER_YYYYMMDD-HHmmss.csv`) for deterministic “latest file” selection.  
+- Helper functions and Markdown explanation blocks document design choices, runtime flags, and reviewer considerations.  
 
 ---
 
@@ -194,7 +185,7 @@ Additional functions, such as `plot_close_prices(data, output_dir)`, are impleme
 These functions are designed for **reusability, readability, and transparency**. Their modular structure ensures reproducibility across both notebook and script, while making it easy for reviewers to see how each step fulfils the assessment requirements. Inline documentation and clear responsibilities mean the workflow can be maintained or scaled later without breaking consistency.
 
 
-#### References  
+### References  
 - [Real Python – Python Modules and Packages](https://realpython.com/python-modules-packages/)  
 - [GeeksforGeeks – Python Helper Functions](https://www.geeksforgeeks.org/python-helper-functions/)  
 - [Wikipedia – DRY Principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)  
@@ -207,26 +198,23 @@ These functions are designed for **reusability, readability, and transparency**.
 ## Problem 1: Fetch Hourly FAANG Data
 
 ### Objective
-Use the `yfinance` package to fetch **5 days of hourly OHLCV data** for the FAANG tickers and save the results to a timestamped CSV file.  
-This fulfils the **Problem 1 requirement** of the assessment.
+Download hourly OHLCV data for META, AAPL, AMZN, NFLX, and GOOG covering the last 5 trading days, and save timestamped CSVs.
 
-### Workflow
-- Define and validate the FAANG ticker list (`META`, `AAPL`, `AMZN`, `NFLX`, `GOOG`).  
-- Use `fetch_hourly_history()` to retrieve hourly OHLCV data via `yfinance.Ticker.history`.  
-- Label each DataFrame with a `Ticker` column and clean the index (`Date`).  
-- Concatenate all ticker DataFrames into one combined dataset.  
-- Save the dataset to `data/YYYYMMDD-HHMMSS.csv` using `pandas.DataFrame.to_csv`.  
+### What it does
+- Uses yfinance to fetch hourly data.
+- Aligns each ticker’s data with Date as datetime index.
+- Saves outputs into data/ folder with filenames TICKER_YYYYMMDD-HHmmss.csv (UTC).
 
-### 📤 Output File
-- **Format:** `data/YYYYMMDD-HHMMSS.csv`  
-- **Example:** `data/20251122-162358.csv`  
-- A single combined CSV is saved per run, containing rows for all FAANG tickers.  
-- Each row includes OHLCV values plus a `Ticker` label for clarity.  
-- Filenames are timestamped for reproducibility and version control.
+### Why its useful
+Provides reproducible, timestamped datasets for analysis and comparison.
 
-📖 References:  
+### Reviewer guidance
+- Diagnostics print shape and time range before saving.
+- Filenames are lexicographically sortable for deterministic “latest file” selection.
+
+### References
 - [yfinance.Ticker.history](https://github.com/ranaroussi/yfinance)  
-- [pandas.DataFrame.to_csv](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html)  
+- [pandas read_csv](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)  
 - [datetime Module](https://docs.python.org/3/library/datetime.html)  
 
 ---
@@ -234,14 +222,19 @@ This fulfils the **Problem 1 requirement** of the assessment.
 ## 📊 Problem 2: Plotting Data
 
 ### 🎯 Objective
-Visualise the **hourly closing prices** of all FAANG tickers using the most recent CSV file.  
-This fulfils the **Problem 2 requirement** of the assessment.
+Visualise hourly closing prices for all FAANG tickers on a single chart.
 
-### ⚙️ Workflow
-1. Load the latest combined CSV from the `data/` folder using `pandas.read_csv`.  
-2. Split rows by ticker and plot the `Close` prices for each using `matplotlib`.  
-3. Add axis labels (`Date`, `Close Price (USD)`), a legend for tickers, and a title showing the **current system date** at runtime.  
-4. Save the plot to `plots/YYYYMMDD-HHMMSS.png` with a UTC timestamped filename.  
+### What it does
+- Loads the latest CSVs from data/.
+- Plots Close series for each ticker using Matplotlib.
+- Titles include last available trading date for clarity.
+
+### Why its useful
+Provides clear visual comparisons of FAANG hourly closes over the last five trading days.
+
+### Reviewer guidance
+- Saved plots are timestamped PNGs in plots/.
+- Titles explicitly display the last trading session to avoid weekend/holiday ambiguity
 
 ### 📤 Output File
 - **Format:** `plots/YYYYMMDD-HHMMSS.png`  
@@ -250,83 +243,111 @@ This fulfils the **Problem 2 requirement** of the assessment.
 
 ![Example Plot](plots/20251122-162358.png)
 
-📖 References:  
+### References
 - [pandas.read_csv](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)  
 - [matplotlib.pyplot.plot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html)  
 
 ---
 
-### Analysis (optional)
-These visuals extend beyond the assessment and are displayed inline in the notebook (not saved as PNGs). They build on the derived columns added in Step 6a (Return and RollingMean).
-
-### Step 8 visualisations (8a–8e)
-
-#### 8a: Per‑ticker return distribution (histogram + KDE):
-
- For each ticker, hourly returns are computed with pct_change(), converted to numeric, and plotted using seaborn.histplot with a seaborn.kdeplot overlay. This highlights the distribution shape and volatility for each stock.
-
-#### 8b: Return distribution (remaining tickers):
-  The histogram + KDE workflow repeats across all FAANG tickers, ensuring consistent comparison of hourly return behaviour and tail risk profiles across symbols.
-
-#### 8c: Cross‑ticker returns boxplot: 
-
-  Returns for all tickers are assembled into a single DataFrame and plotted via seaborn.boxplot, summarising spread and outliers to compare volatility at a glance.
-
-#### 8d: Rolling average overlays (per ticker): 
-
-  Each ticker’s raw Close series is plotted alongside a 30‑period rolling mean (rolling(window=30).mean()), using matplotlib line plots to reveal smoothed trends versus hourly noise.
-
-#### 8e: Notes on plotting style and previews: 
-
-  Plots use a consistent white‑grid style (seaborn.set_style('whitegrid')), and the notebook includes previews and summaries before plotting to validate data integrity and shape.
----
-
 ## Problem 3: Script Creation (`faang.py`)
 
 ### Objective
-Convert the notebook logic into a standalone Python script that can be executed from the terminal.  
-This fulfils the **Problem 3 requirement** of the assessment.
+Convert notebook logic into a standalone Python script for repeatable execution.
 
-### Script: `faang.py`
-The script replicates the notebook logic and supports flexible execution via command‑line flags.  
-It automatically saves outputs into the `data/` and `plots/` folders with timestamped filenames.
+### What it does
+- Replicates notebook functions in faang.py.
+- Supports CLI flags (--plot, --overwrite, --show).
+- Saves outputs into data/ and plots/ folders with timestamped filenames.
 
-### Features
-- Fetches and saves hourly FAANG data (`save_hourly_data()`)  
-- Generates and saves comparative plots (`plot_close_prices()`)  
-- Supports CLI flags for flexible execution  
-- Titles plots with the **last available trading date** for consistency  
+### Why its useful
+Enables reproducible automation outside Jupyter, with flexible command‑line execution 
 
-### CLI Flags
-- `--plot` — Generate and save a plot after fetching data  
-- `--overwrite` — Allow overwriting an existing CSV file  
-- `--show` — Display the plot after saving  
+### Reviewer guidance
+- Documented usage and functionality in README.
+- Tested in both terminal and GitHub Codespaces environments.
 
-📖 Reference: [argparse — CLI Argument Parsing](https://docs.python.org/3/library/argparse.html)
-
-### Script Design Process
-- ✅ Copied modular functions from the notebook into `faang.py`  
-  📖 [Modular Functions in Python](https://realpython.com/python-modules-packages/)  
-
-- ✅ Implemented `plot_close_prices()` in the script to package plotting logic  
-  📖 [matplotlib.pyplot](https://matplotlib.org/stable/api/pyplot_summary.html), [seaborn](https://seaborn.pydata.org)  
-
-- ✅ Integrated `argparse` to support CLI flags  
-  📖 [argparse Documentation](https://docs.python.org/3/library/argparse.html)  
-
-- ✅ Mapped notebook steps to discrete functions for clarity and reuse  
-  📖 [Python Modules and Packages](https://realpython.com/python-modules-packages/)  
-
-- ✅ Added CLI flags for flexible execution in different environments  
-
-- ✅ Tested the script in both terminal and GitHub Codespaces environments  
-
-- ✅ Documented usage and functionality in this README  
-  📖 [Documenting Python Code](https://realpython.com/documenting-python-code/)  
+### References
+- [argparse — CLI Argument Parsing](https://docs.python.org/3/library/argparse.html)
+- [Python modules and packages](https://realpython.com/python-modules-packages/)
 
 ---
 
 ## Problem 4: Automation with GitHub Actions ( To Be Completed )
+
+### Objective 
+Automate execution of faang.py on a fixed cadence.
+
+### What it does
+- Provides scheduled workflow (.github/workflows/faang.yml).
+- Commits updated CSVs and plots to repository.
+- Produces clear, auditable commit history.
+
+### Why it’s useful 
+Ensures outputs remain fresh and reproducible without manual intervention.
+
+### Reviewer guidance
+- Workflow is conservative; runs weekly by default.
+- Commit history documents updates transparently.
+
+### References
+- [GitHub Actions documentation](https://docs.github.com/en/actions)
+
+---
+
+### Step 8 — Extended Visualisations (Step 8a–8e)
+
+This section introduces **optional, exploratory plots** that build on the Step 1 data dictionary and the derived `Return` and `RollingMean` columns from Step 6a. Each plot has its own short explanation cell and code cell.
+
+- **Step 8a — Histogram + KDE of Returns**  
+  *Reveals the distribution shape, tails, and outliers for each ticker; useful for spotting non‑normality and extreme intraday moves.*
+
+- **Step 8b — Pairwise Scatterplot Matrix (Pairplot)**  
+  *Visualises pairwise relationships and joint distributions between tickers’ synchronous returns; highlights non‑linear relationships and niche clusters.*
+
+- **Step 8c — Correlation Analysis (Hourly Returns)**  
+  *Summarises linear co‑movement across tickers using Pearson correlation; compact view for diversification and risk discussion.*
+
+- **Step 8d — Cumulative Returns vs Equal‑weight FAANG**  
+  *Compares compounded performance of each ticker to a simple equal‑weight FAANG benchmark; shows relative outperformance and path differences.*
+
+- **Step 8e — Rolling Average Plots**  
+  *Overlays 30‑period moving averages on hourly closes; smooths short‑term noise to reveal longer‑term trends.*
+
+### 📝 Usage Notes
+- All plots read `Close` (and `Date`) from Step 1 frames.  
+- Returns are computed from prices when missing.  
+- Plots are **exploratory only** and do not modify saved files.  
+
+### References
+- [pandas pct_change](https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.pct_change.html#pandas.core.groupby.DataFrameGroupBy.pct_change)
+- [pandas rolling](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html)
+- [seaborn plotting](https://seaborn.pydata.org/)  
+
+---
+
+### Step 9 — Workflow Documentation
+
+### Objective 
+Summarise the notebook’s workflow and reproducibility practices.
+
+### Workflow demonstrated
+1. Fetch hourly FAANG data
+2. Load and validate downloads
+3. Preview and summarise datasets
+4. Plot closing prices
+5. Extended visualisations (returns, rolling means, histograms, boxplots, pairplots)
+6. Correlation analysis on synchronous returns
+7. Comparative performance vs benchmark
+8. Notebook‑level documentation and references
+
+### Reviewer guidance
+- Each step documents inputs, alignment choices, and imputation.
+- Diagnostics (shapes, time ranges, co‑observation counts) printed before key computations.
+
+### References
+- [pandas User Guide](https://pandas.pydata.org/docs/user_guide/index.html)
+- [Matplotlib documentation](https://matplotlib.org/stable/contents.html)
+- [Seaborn documentation](https://seaborn.pydata.org/)
 
 ---
 
@@ -334,7 +355,9 @@ It automatically saves outputs into the `data/` and `plots/` folders with timest
 
 Copilot was used to assist with code generation and suggestions throughout this project.
 
+---
+
 ### Personal Reflection
 
-They say less is more and that is certainly true when it comes to writing code.  I used copilot to help me with this assignment and found that it often produced code that was too verbose and complicated for the task at hand.  By simplifying the code and focusing on the core functionality, I was able to create a more efficient and maintainable solution.  By reviewing weekly lectures, I was able to see what was being asked in a notebook, not cells full of extremely complicated code.  I was conscious of my audience. This experience has reinforced the importance of writing clean and concise code, and I will strive to apply this principle in my future coding endeavors.  I found the feedback very useful in helping me to identify areas where I could improve my code and I set out to ensure that my final submission reflected these improvements. I spent time refining my code to enhance its clarity and efficiency, ultimately leading to I hope, a more polished final submission.
+This project reinforced the importance of writing clean, concise, and reproducible code. Copilot assisted with code generation, but outputs were simplified and refined for clarity. By focusing on transparency, diagnostics, and reviewer guidance, the final workflow is both efficient and easy to understand.
 
