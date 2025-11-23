@@ -67,7 +67,7 @@ After cloning, you can either:
 - `faang.py` — CLI script version of notebook logic  
 - `data/` — folder for timestamped CSVs (raw downloads)  
 - `plots/` — folder for saved PNGs (visualisations)  
-- `.github/workflows/faang.yml` — GitHub Actions workflow for automation  
+- `.github/workflows/faang.yml` — GitHub Actions workflow for automation  (TO BE ADDED)
 
 ---
 
@@ -106,7 +106,8 @@ jupyter notebook problems.ipynb
 
 **note:** the script automatically saves CSV's and plots appropriately into data/ and plots/ folders.
 
-📖 Reference: [GitHub Codespaces Overview](https://docs.github.com/en/codespaces/quickstart)
+### Reference 
+- [GitHub Codespaces Overview](https://docs.github.com/en/codespaces/quickstart)
 
 ### Option 2: Local Python Environment
 
@@ -139,7 +140,7 @@ jupyter notebook problems.ipynb
 ./faang.py
 ```
 
-### References:
+### References
 - [Python Virtual Environments — Real Python](https://realpython.com/python-virtual-environments-a-primer/).  
 *This shows how to create and manage virtual environments for Python projects.*
 - [chmod Command — GeeksforGeeks](https://www.geeksforgeeks.org/chmod-command-in-linux-with-examples/).  *This explains how to use the chmod command to change file permissions in Unix-like operating systems.*
@@ -185,7 +186,6 @@ Additional functions, such as `plot_close_prices(data, output_dir)`, are impleme
 ### Why this matters
 This project demonstrates reproducible workflows for FAANG stock analysis, aligning with module assessment requirements. By documenting inputs, alignment choices, and diagnostics, it ensures transparency for reviewers and provides a clear learning resource for students.”
 
-
 ### References  
 - [Real Python – Python Modules and Packages](https://realpython.com/python-modules-packages/)  
 - [GeeksforGeeks – Python Helper Functions](https://www.geeksforgeeks.org/python-helper-functions/)  
@@ -198,25 +198,25 @@ This project demonstrates reproducible workflows for FAANG stock analysis, align
 
 ## Problem 1 — Fetch Hourly FAANG Data
 
-**Objective**  
+### Objective  
 Download hourly OHLCV data for META, AAPL, AMZN, NFLX, and GOOG covering the last 5 trading sessions, and save timestamped CSVs.
 
-**What it does**  
+### What it does  
 - Uses `yfinance` to fetch hourly data.  
 - Aligns each ticker’s data with `Date` as datetime index.  
 - Saves outputs into `data/` folder with filenames `TICKER_YYYYMMDD-HHmmss.csv` (UTC).  
 
-**Why it’s useful**  
+### Why it’s useful  
 *Provides reproducible, timestamped datasets for analysis and comparison.*  
 - Guarantees reviewers can trace plots and statistics back to exact input files.  
 - Prevents ambiguity around weekends or market holidays by explicitly saving the last available trading session.  
 
-**Reviewer guidance**  
+### Reviewer guidance  
 - Diagnostics print shape and time range before saving.  
 - Filenames are lexicographically sortable for deterministic “latest file” selection.  
 - If no overlapping timestamps are found, consider outer joins with documented NaN handling.  
 
-**References**  
+### References  
 - [yfinance documentation](https://pypi.org/project/yfinance/)  
 - [pandas read_csv](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)  
 - [datetime module](https://docs.python.org/3/library/datetime.html)  
@@ -225,26 +225,26 @@ Download hourly OHLCV data for META, AAPL, AMZN, NFLX, and GOOG covering the las
 
 ## Problem 2 — Plot Closing Prices
 
-**Objective**  
+### Objective  
 Load the latest saved CSV for each ticker and plot hourly Close prices on a single chart.
 
-**What it does**  
+### What it does  
 - Uses `load_latest_csvs()` helper to select the most recent file per ticker.  
 - Plots all five Close price series on a shared timeline with axis labels, legend, and date‑range title.  
 - Saves plots to `plots/` with filenames `faang_close_YYYYMMDD-HHmmss.png` (UTC).  
 - Supports a stable filename `faang_close.png` when `NO_DATE_PLOTS=True` (useful for README embedding).  
 
-**Why it’s useful**  
+### Why it’s useful  
 *Provides a clear visual comparison of FAANG hourly closes over the last five trading days.*  
 
-**Reviewer guidance**  
+### Reviewer guidance  
 - Titles explicitly display the last available trading session to avoid weekend/holiday ambiguity.  
 - Saved plots are timestamped for reproducibility.
 
-**Output File**
+### Output File
 ![Example Plot](plots/20251122-162358.png)
 
-**References**  
+### References  
 - [Matplotlib documentation](https://matplotlib.org/stable/contents.html)  
 - [pandas timeseries guide](https://pandas.pydata.org/docs/user_guide/timeseries.html)  
 
@@ -252,22 +252,22 @@ Load the latest saved CSV for each ticker and plot hourly Close prices on a sing
 
 ## Problem 3 — CLI Script (`faang.py`)
 
-**Objective**  
+### Objective  
 Encapsulate notebook logic into a standalone script for repeatable execution.
 
-**What it does**  
+### What it does  
 - Replicates notebook functions in `faang.py`.  
 - Supports CLI flags (`--plot`, `--overwrite`, `--show`).  
 - Saves outputs into `data/` and `plots/` folders with timestamped filenames.  
 
-**Why it’s useful**  
+### Why it’s useful  
 *Enables reproducible automation outside Jupyter, with flexible command‑line execution.*  
 
-**Reviewer guidance**  
+### Reviewer guidance  
 - Documented usage and functionality in README.  
 - Tested in both terminal and GitHub Codespaces environments.  
 
-**References**  
+### References  
 - [argparse documentation](https://docs.python.org/3/library/argparse.html)  
 
 ---
@@ -467,10 +467,10 @@ Plot hourly Close prices alongside a 30‑period rolling average.
 
 ## Step 9 — Workflow Documentation
 
-**Objective**  
+### Objective  
 Summarise the notebook’s workflow and reproducibility practices.
 
-**Workflow demonstrated**  
+### Workflow demonstrated  
 1. Fetch hourly FAANG data  
 2. Load and validate downloads  
 3. Preview and summarise datasets  
@@ -480,14 +480,14 @@ Summarise the notebook’s workflow and reproducibility practices.
 7. Comparative performance vs benchmark  
 8. Notebook‑level documentation and references  
 
-**Why it’s useful**  
+### Why it’s useful  
 *Provides a clear roadmap of the analysis pipeline and ensures transparency for reviewers.*  
 
-**Reviewer guidance**  
+### Reviewer guidance  
 - Each step documents inputs, alignment choices, and imputation.  
 - Diagnostics (shapes, time ranges, co‑observation counts) are printed before key computations.  
 
-**References**  
+### References  
 - [pandas User Guide](https://pandas.pydata.org/docs/user_guide/index.html)  
 - [Matplotlib documentation](https://matplotlib.org/stable/contents.html)  
 - [Seaborn documentation](https://seaborn.pydata.org/)  
