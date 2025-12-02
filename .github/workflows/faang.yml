@@ -1,9 +1,6 @@
 name: FAANG Automation Workflow
 run-name: ${{ github.actor }} triggered FAANG automation 🚀
-
-on:
-  push:                     # Run immediately when you push changes
-  workflow_dispatch:        # Allow manual trigger from GitHub UI
+on: [push, workflow_dispatch]   # Run immediately on push or allow manual trigger
 
 jobs:
   Run-FAANG-Analysis:
@@ -28,7 +25,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run FAANG script
-        run: ./faang.py
+        run: python faang.py   # safer than ./faang.py if executable bit not set
 
       - name: List generated files
         run: |
