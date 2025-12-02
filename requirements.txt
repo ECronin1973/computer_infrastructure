@@ -1,8 +1,11 @@
-pandas
-numpy
-yfinance
-matplotlib
-seaborn
-requests
-scikit-learn
-ipykernel
+# requirements.txt — FAANG Analysis Project
+# Updated December 2025 with latest stable versions
+
+pandas==2.2.3
+numpy==2.1.3
+yfinance==0.2.50
+matplotlib==3.9.2
+seaborn==0.13.2
+requests==2.32.3
+scikit-learn==1.5.2
+ipykernel==6.29.5
