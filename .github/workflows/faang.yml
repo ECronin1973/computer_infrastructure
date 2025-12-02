@@ -10,7 +10,8 @@ jobs:
     steps:
       - run: echo "🎉 Workflow triggered by ${{ github.event_name }} event."
       - run: echo "🐧 Running on a ${{ runner.os }} server hosted by GitHub."
-      - run: echo "🔎 Branch: ${{ github.ref }} | Repository: ${{ github.repository }}"
+      - run: |
+          echo "🔎 Branch: ${{ github.ref }} | Repository: ${{ github.repository }}"
 
       - name: Check out repository code
         uses: actions/checkout@v6
