@@ -22,47 +22,31 @@ jobs:
   Run-FAANG-Analysis:
     runs-on: ubuntu-latest
     env:
-      MPLBACKEND: Agg   # Ensure headless plotting works (no display required)
+      MPLBACKEND: Agg   # Ensure headless plotting works
       BRANCH_NAME: ${{ github.ref_name }}
-      WORKFLOW_VERSION: "2025-12-03"   # Extra metadata for tracking
 
     steps:
-      - run: echo "🎉 Workflow triggered by ${{ github.event_name }} event."
-      - run: echo "🐧 Running on a ${{ runner.os }} server hosted by GitHub."
-      - run: |
-          echo "🔎 Branch: ${{ github.ref }} | Repository: ${{ github.repository }}"
-          echo "📌 Workflow version: $WORKFLOW_VERSION"
-
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}   # Use the ref that triggered the workflow
-          fetch-depth: 0           # Full history so we can commit and push
+          ref: ${{ github.ref }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Upgrade pip and install dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          # Ensure certifi is up to date for SSL
-          python -m pip install --upgrade certifi
-
-      # 🔎 Diagnostic step to confirm environment and API connectivity
-      - name: Debug environment and network
-        run: |
-          python --version
-          pip list
-          curl -I https://query1.finance.yahoo.com/v7/finance/download/AAPL || echo "Yahoo Finance unreachable"
 
       - name: Run FAANG script
         run: |
-          echo "🚀 Starting FAANG analysis run..."
+          set -e  # stop immediately if python faang.py exits with non‑zero
           python faang.py
-          echo "✅ FAANG script finished."
+          echo "✅ FAANG script executed successfully at $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 
       - name: List generated files
         run: |
@@ -75,9 +59,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global --add safe.directory "$PWD"
           # Stage generated artifacts if present
-          if ls data/*.csv >/dev/null 2>&1; then git add data/*.csv; fi
-          if ls plots/*.png >/dev/null 2>&1; then git add plots/*.png; fi
+          git add data/*.csv plots/*.png || echo "No files to add"
           # Commit if there are staged changes
-          git diff --cached --quiet && echo "ℹ️ No changes to commit" || git commit -m "Automated FAANG results on $(date -u +'%Y-%m-%d %H:%M:%S')"
+          git diff --cached --quiet && echo "ℹ️ No changes to commit" || git commit -m "Automated FAANG results on $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           # Push to the branch that triggered the workflow (e.g. main)
           git push origin "$BRANCH_NAME"
