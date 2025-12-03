@@ -1,0 +1,104 @@
+name: FAANG Automation Workflow
+run-name: ${{ github.actor }} triggered FAANG automation 🚀
+
+on:
+  schedule:
+    - cron: "0 9 * * 6"   # Every Saturday at 09:00 UTC
+  workflow_dispatch:       # Allow manual runs for testing
+
+permissions:
+  contents: write          # Needed to push changes back to the repo
+
+jobs:
+  Run-FAANG-Analysis:
+    runs-on: windows-latest
+    env:
+      MPLBACKEND: Agg
+      BRANCH_NAME: ${{ github.ref_name }}
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m pip install --upgrade certifi   # ensure SSL certificates are up to date
+          pip install --upgrade yfinance            # ensure latest yfinance on runner
+
+      - name: Environment diagnostics
+        shell: pwsh
+        run: |
+          python --version
+          pip list
+          python -c "import ssl; print('SSL version:', ssl.OPENSSL_VERSION)"
+          python -c "import certifi; print('Certifi CA bundle:', certifi.where())"
+          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+      - name: Run FAANG script
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          [Console]::InputEncoding  = [System.Text.Encoding]::UTF8
+          $env:PYTHONIOENCODING = "utf-8"
+          $env:PYTHONUTF8 = "1"
+          New-Item -ItemType Directory -Force -Path data | Out-Null
+          New-Item -ItemType Directory -Force -Path plots | Out-Null
+          python -X utf8 faang.py
+
+      - name: Confirm success
+        if: success()
+        shell: pwsh
+        run: |
+          $utc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss 'UTC'")
+          Write-Host "✅ faang.py executed successfully at $utc"
+
+      - name: List generated files
+        shell: pwsh
+        run: |
+          if (Test-Path data) { Get-ChildItem -Path data -Force | Format-Table -AutoSize } else { Write-Host "No data directory yet" }
+          if (Test-Path plots) { Get-ChildItem -Path plots -Force | Format-Table -AutoSize } else { Write-Host "No plots directory yet" }
+
+      - name: Commit and push results
+        shell: pwsh
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global --add safe.directory (Get-Location)
+
+          $files = @()
+          if (Test-Path data) { $files += Get-ChildItem data -Filter *.csv -File -Recurse }
+          if (Test-Path plots) { $files += Get-ChildItem plots -Filter *.png -File -Recurse }
+
+          if ($files.Count -eq 0) {
+            Write-Host "ℹ️ No files to add"
+          } else {
+            $filesPaths = $files | ForEach-Object { $_.FullName }
+            git add $filesPaths
+          }
+
+          # Determine if there are staged changes
+          git diff --cached --quiet
+          $hasStagedChanges = ($LASTEXITCODE -ne 0)
+          # Determine if there are unstaged changes
+          $hasUnstagedChanges = -not [string]::IsNullOrEmpty((git status --porcelain))
+
+          if (-not $hasStagedChanges -and -not $hasUnstagedChanges) {
+            Write-Host "ℹ️ No changes to commit"
+          } else {
+            $utc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss 'UTC'")
+            git commit -m "[CI] faang.py results on $utc"
+          }
+
+          git push origin "$env:BRANCH_NAME"
