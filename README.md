@@ -19,12 +19,12 @@ This repository demonstrates reproducible workflows for FAANG stock analysis, al
 2. [Target Audience](#target-audience)
 3. [Environment Setup](#environment-setup)
 4. [Included Files](#included-files)
-5. [Helper Functions](#helper-functions)
-6. [Problem 1: Fetch Hourly FAANG Data](#problem-1-fetch-hourly-faang-data)
-7. [Problem 2: Plot Closing Prices](#problem-2-plot-closing-prices)
-8. [Problem 3: CLI Script (`faang.py`)](#problem-3-cli-script-faangpy)
-9. [Problem 4: Automation with GitHub Actions](#problem-4-automation-with-github-actions)
-10. [Extended Visualisations (Step 8a–8e)](#extended-visualisations-step8a-8e)
+5. [Helper Functions and Modular Design](#helper-functions-and-modular-design)
+6. [Problem 1: Fetch Hourly FAANG Data](#problem-1--fetch-hourly-faang-data)
+7. [Problem 2: Plot Closing Prices](#problem-2--plot-closing-prices)
+8. [Problem 3: CLI Script (`faang.py`)](#problem-3--cli-script-faangpy)
+9. [Problem 4: Automation with GitHub Actions](#problem-4--automation-with-github-actions)
+10. [Extended Visualisations (Steps 8a to 8e)](#extended-visualisations-steps8a-to-8e)
 11. [Workflow Documentation (Step 9)](#step-9--workflow-documentation)
 12. [Requirements Compliance Checklist](#-requirements-compliance-checklist)
 13. [Personal Reflection](#personal-reflection)
@@ -374,7 +374,7 @@ All plotted values are **hourly closes**, not daily closes. Each point reflects 
 
 ---
 
-## Extended Visualisations (Step 8a–8e)
+## Extended Visualisations (Steps 8a to 8e)
 
 These optional, display‑only cells build on the Problem 1–4 workflow to provide deeper analysis and exploratory plots.
 
