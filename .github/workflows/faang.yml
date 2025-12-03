@@ -1,6 +1,15 @@
 name: FAANG Automation Workflow
 run-name: ${{ github.actor }} triggered FAANG automation 🚀
 
+# -------------------------------------------------------------------
+# FAANG Automation Workflow
+# Updated: December 2025
+# Notes:
+# - Runs every Saturday at 09:00 UTC
+# - Includes diagnostic steps for SSL/network checks
+# - Designed for reproducibility and reviewer clarity
+# -------------------------------------------------------------------
+
 on:
   schedule:
     - cron: "0 9 * * 6"   # Every Saturday at 09:00 UTC
@@ -15,12 +24,14 @@ jobs:
     env:
       MPLBACKEND: Agg   # Ensure headless plotting works (no display required)
       BRANCH_NAME: ${{ github.ref_name }}
+      WORKFLOW_VERSION: "2025-12-03"   # Extra metadata for tracking
 
     steps:
       - run: echo "🎉 Workflow triggered by ${{ github.event_name }} event."
       - run: echo "🐧 Running on a ${{ runner.os }} server hosted by GitHub."
       - run: |
           echo "🔎 Branch: ${{ github.ref }} | Repository: ${{ github.repository }}"
+          echo "📌 Workflow version: $WORKFLOW_VERSION"
 
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -49,7 +60,9 @@ jobs:
 
       - name: Run FAANG script
         run: |
+          echo "🚀 Starting FAANG analysis run..."
           python faang.py
+          echo "✅ FAANG script finished."
 
       - name: List generated files
         run: |
@@ -65,6 +78,6 @@ jobs:
           if ls data/*.csv >/dev/null 2>&1; then git add data/*.csv; fi
           if ls plots/*.png >/dev/null 2>&1; then git add plots/*.png; fi
           # Commit if there are staged changes
-          git diff --cached --quiet || git commit -m "Automated FAANG results on $(date -u +'%Y-%m-%d %H:%M:%S')"
+          git diff --cached --quiet && echo "ℹ️ No changes to commit" || git commit -m "Automated FAANG results on $(date -u +'%Y-%m-%d %H:%M:%S')"
           # Push to the branch that triggered the workflow (e.g. main)
           git push origin "$BRANCH_NAME"
