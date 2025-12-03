@@ -10,6 +10,10 @@ This repository demonstrates reproducible workflows for FAANG stock analysis, al
 
 ---
 
+![FAANG Automation Workflow](https://github.com/ECronin1973/computer_infrastructure/actions/workflows/faang.yml/badge.svg)
+
+---
+
 ## 📑 Table of Contents
 1. [Background](#background)
 2. [Target Audience](#target-audience)
@@ -57,7 +61,7 @@ cd computer_infrastructure
 After cloning, you can either:
 - Run the notebook (problems.ipynb) step by step in Jupyter.
 - Execute the script directly with ./faang.py to fetch data and generate plots automatically.
-- outputs are automatically saved logically into data/ and plots/ folders.
+- outputs are automatically saved into data/ and plots/ folders with UTC‑timestamped filenames.
 
 ---
 
@@ -67,7 +71,7 @@ After cloning, you can either:
 - `faang.py` — CLI script version of notebook logic  
 - `data/` — folder for timestamped CSVs (raw downloads)  
 - `plots/` — folder for saved PNGs (visualisations)  
-- `.github/workflows/faang.yml` — GitHub Actions workflow for automation  (TO BE ADDED)
+- `.github/workflows/faang.yml` — GitHub Actions workflow for automation (committed and active)
 
 ---
 
@@ -104,7 +108,7 @@ jupyter notebook problems.ipynb
 ./faang.py
 ```
 
-**note:** the script automatically saves CSV's and plots appropriately into data/ and plots/ folders.
+Note: The script automatically saves CSVs and plots into data/ and plots/ folders with UTC‑timestamped filenames.
 
 ### Reference 
 - [GitHub Codespaces Overview](https://docs.github.com/en/codespaces/quickstart)
@@ -272,7 +276,7 @@ Encapsulate notebook logic into a standalone script for repeatable execution.
 
 ---
 
-## Problem 4: Automation with GitHub Actions ( To Be Completed )
+## Problem 4: Automation with GitHub Actions
 
 ### Objective 
 Automate execution of faang.py on a fixed cadence.
@@ -281,6 +285,20 @@ Automate execution of faang.py on a fixed cadence.
 - Provides scheduled workflow (.github/workflows/faang.yml).
 - Commits updated CSVs and plots to repository.
 - Produces clear, auditable commit history.
+
+### GitHub Actions Workflow
+- The automation pipeline is defined in `.github/workflows/faang.yml`.  
+- This file documents triggers, environment setup, dependency installation, diagnostics, script execution, and commit/push steps.
+
+### Workflow Logs
+- Each automated run produces detailed logs in the GitHub Actions dashboard.  
+- Reviewers can verify environment diagnostics, script execution, and commit history directly from these logs.
+- Logs can be accessed via the Actions tab in GitHub, under the FAANG Automation Workflow runs.
+
+### Automated Outputs
+- New CSVs are saved into `data/` with UTC‑timestamped filenames.  
+- Plots are saved into `plots/` with UTC‑timestamped filenames.  
+- Both are committed weekly by the GitHub Actions workflow, ensuring reproducibility and transparency.
 
 ### Why it’s useful 
 Ensures outputs remain fresh and reproducible without manual intervention.
@@ -291,6 +309,12 @@ Ensures outputs remain fresh and reproducible without manual intervention.
 
 ### References
 - [GitHub Actions documentation](https://docs.github.com/en/actions)
+
+---
+
+## Local Repository Sync
+Before making local changes, run `git status` and `git pull` to ensure your branch is up to date.  
+This prevents conflicts with automated commits pushed by the workflow and maintains a clean audit trail.
 
 ---
 
@@ -334,7 +358,7 @@ All plotted values are **hourly closes**, not daily closes. Each point reflects 
 
 ---
 
-**Problem 4: Automation with GitHub Actions** (TO BE COMPLETED)
+**Problem 4: Automation with GitHub Actions**
 - ✔ Workflow file `.github/workflows/faang.yml` defined  
 - ✔ Automates execution of `faang.py` on a fixed cadence (weekly by default)  
 - ✔ Commits updated CSVs and plots to repository  
