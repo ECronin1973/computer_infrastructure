@@ -57,14 +57,7 @@ def fetch_hourly_history(ticker):
     return df
 
 def save_hourly_data(tickers, output_dir: Path):
-    """Fetch all tickers, concatenate into one DataFrame and save a single timestamped CSV.
-
-    Returns
-    -------
-    Tuple[Path, str] | None
-        A tuple of (saved_path, ts) on success, where ts is the UTC timestamp string
-        used for both CSV and plot naming. Returns None if no data is saved.
-    """
+    """Fetch all tickers, concatenate into one DataFrame and save a single timestamped CSV."""
     dfs = []
     for t in tickers:
         df = fetch_hourly_history(t)
@@ -90,7 +83,7 @@ def save_hourly_data(tickers, output_dir: Path):
     final_df.to_csv(tmp, index=False)
     tmp.replace(path)
     print(f"✅ Data saved to {path}")
-    return path, ts
+    return path
 
 def load_latest_data(tickers, folder: str = 'data'):
     """Load the most recent combined CSV (lexicographic newest) and return dict of ticker DataFrames."""
@@ -106,12 +99,8 @@ def load_latest_data(tickers, folder: str = 'data'):
     print(f"✅ Loaded {latest}")
     return data
 
-def plot_close_prices(data: dict, output_dir: Path, show: bool = False, ts: str | None = None):
-    """Plot hourly Close series for each ticker and save to a timestamped PNG.
-
-    If `ts` is provided, it is reused for the plot filename to match the CSV.
-    Otherwise a fresh UTC timestamp is generated.
-    """
+def plot_close_prices(data: dict, output_dir: Path, show: bool = False):
+    """Plot hourly Close series for each ticker and save to a timestamped PNG."""
     fig, ax = plt.subplots()
     plotted = False
     last_date = None
@@ -142,8 +131,7 @@ def plot_close_prices(data: dict, output_dir: Path, show: bool = False, ts: str 
     else:
         ax.set_title("FAANG Hourly Closing Prices — No Data")
 
-    if not ts:
-        ts = datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')
+    ts = datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')
     plot_path = output_dir / f"{ts}.png"
     fig.tight_layout()
     fig.savefig(str(plot_path), bbox_inches='tight')
@@ -158,13 +146,11 @@ def main():
     saved_path = None
 
     # Problem 1 — Fetch and save CSV (optional)
-    csv_ts = None
     if RUN_PROBLEM_1:
-        result = save_hourly_data(TICKERS, DATA_DIR)
-        if not result:
+        saved_path = save_hourly_data(TICKERS, DATA_DIR)
+        if not saved_path:
             print("🚫 No data file saved. Exiting.")
             return
-        saved_path, csv_ts = result
     else:
         print("ℹ️ Problem 1 skipped — CSV not generated (RUN_PROBLEM_1 = False).")
 
@@ -174,7 +160,7 @@ def main():
         if not data:
             print("🚫 No CSV available to load for plotting. Enable RUN_PROBLEM_1 or ensure a CSV exists.")
             return
-        plot_close_prices(data, PLOTS_DIR, show=True, ts=csv_ts)
+        plot_close_prices(data, PLOTS_DIR, show=True)
     else:
         print("ℹ️ Problem 2 skipped — set RUN_PROBLEM_2 = True to generate and display the plot.")
 
