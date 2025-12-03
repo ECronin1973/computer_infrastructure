@@ -246,7 +246,7 @@ Load the latest saved CSV for each ticker and plot hourly Close prices on a sing
 - Saved plots are timestamped for reproducibility.
 
 ### Output File
-![Example Plot](plots/20251122-162358.png)
+![Example Plot](plots/20251203-120256.png)
 
 ### References  
 - [Matplotlib documentation](https://matplotlib.org/stable/contents.html)  
