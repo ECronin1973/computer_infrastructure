@@ -312,6 +312,33 @@ Ensures outputs remain fresh and reproducible without manual intervention.
 
 ---
 
+## GitHub Actions Practice Workflow
+
+### Objective  
+Provide an initial, lightweight workflow to practice GitHub Actions functionality before implementing the full FAANG automation pipeline.
+
+### What it does  
+- Defines a simple workflow in `.github/workflows/github-actions-practice.yml`.  
+- Triggered on **push events**.  
+- Executes a job that lists all files in the repository.  
+- Serves as a sandbox for testing workflow syntax and GitHub Actions basics.  
+
+### Why it’s useful  
+*Allows safe experimentation with GitHub Actions without affecting the main FAANG automation workflow.*  
+- Helps confirm that workflows trigger correctly on repository events.  
+- Provides a quick way to verify repository contents.  
+- Remains in the repository as a reference for future workflow development.  
+
+### Reviewer guidance  
+- This file is **not part of the formal assessment tasks** but demonstrates initial practice with GitHub Actions.  
+- Reviewers can check the Actions tab for runs of this workflow to confirm push triggers and file listings.  
+
+### References  
+- [GitHub Actions Quickstart](https://docs.github.com/en/actions/quickstart)  
+- [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)  
+
+---
+
 ## Local Repository Sync
 Before making local changes, run `git status` and `git pull` to ensure your branch is up to date.  
 This prevents conflicts with automated commits pushed by the workflow and maintains a clean audit trail.
