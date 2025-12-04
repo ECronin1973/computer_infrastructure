@@ -555,4 +555,22 @@ Copilot was used to assist with code generation and suggestions throughout this 
 
 This project reinforced the importance of writing clean, concise, and reproducible code. Copilot assisted with code generation, but outputs were simplified and refined for clarity. By focusing on transparency, diagnostics, and reviewer guidance, the final workflow is both efficient and easy to understand.
 
+I found the automation section particularly challenging at first, as the workflow initially only saved the files in memory rather than committing them to the repository. To overcome this, I reverted to practicing with the **GitHub Actions Practice Workflow**, which provided a simpler environment to test triggers and outputs. Once this practice workflow was running correctly, I built on it step by step, researching various aspects of GitHub Actions until the full automation pipeline worked as intended. This iterative approach highlighted the value of experimentation, incremental learning, and persistence when tackling new infrastructure tasks.
+
+During early runs of the automation workflow, I repeatedly encountered the following error messages:
+
+```lang
+Run python faang.py 
+Failed to get ticker 'META' reason: Expecting value: line 1 column 1 (char 0) 
+$META: possibly delisted; no price data found (period=5d) 
+Failed to get ticker 'AAPL' reason: Expecting value: line 1 column 1 (char 0) 
+$AAPL: possibly delisted; no price data found (period=5d) ... 
+🚫 No valid data to save. 
+🚫 No data file saved. Exiting.
+```
+
+These failures occurred because the workflow environment was not correctly configured to fetch live ticker data, causing `yfinance` to return empty responses. After reviewing the `.yml` configuration and researching how GitHub Actions handles Python environments and dependencies, I corrected the workflow by ensuring proper installation of requirements, stable internet access within the job, and explicit version pins for reproducibility. Once these adjustments were made, the workflow successfully fetched and saved FAANG data, producing valid CSVs and plots.  
+
+This experience taught me the importance of diagnosing environment-specific issues in CI/CD pipelines and reinforced the need for clear logging, incremental testing, and fallback practice workflows to build confidence before tackling more complex automation tasks.
+
 ### END
