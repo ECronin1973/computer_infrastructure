@@ -337,6 +337,14 @@ Provide an initial, lightweight workflow to practice GitHub Actions functionalit
 - [GitHub Actions Quickstart](https://docs.github.com/en/actions/quickstart)  
 - [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)  
 
+
+### Follow Up to ensure Step 4 worked correctly
+- After the scheduled date to run the FAANG Automation Workflow, I verified that it executed successfully by checking the GitHub Actions logs:
+- I clicked into the 'Actions' tab in my GitHub repository to see the workflow runs.
+- I clicked on the latest run of the 'FAANG Automation Workflow' to view detailed logs
+- I reviewed the logs to confirm that the workflow executed successfully, checking for any errors or warnings.
+- I verified that new CSV files were created in the 'data/' folder and new plot images in the 'plots/' folder, with appropriate UTC-timestamped filenames.
+
 ---
 
 ## Local Repository Sync
