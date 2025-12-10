@@ -344,6 +344,7 @@ Provide an initial, lightweight workflow to practice GitHub Actions functionalit
 - I clicked on the latest run of the 'FAANG Automation Workflow' to view detailed logs
 - I reviewed the logs to confirm that the workflow executed successfully, checking for any errors or warnings.
 - I verified that new CSV files were created in the 'data/' folder and new plot images in the 'plots/' folder, with appropriate UTC-timestamped filenames.
+- A new CSV file and plot image were committed to the repository, confirming that the automation worked as intended.  I performed a git status and git pull to ensure my local repository was up to date with the latest changes from the remote repository.
 
 ---
 
