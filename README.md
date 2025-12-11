@@ -276,82 +276,54 @@ Encapsulate notebook logic into a standalone script for repeatable execution.
 
 ---
 
-## Problem 4: Automation with GitHub Actions
+# Problem 4: Automation with GitHub Actions
 
-### Objective 
-Automate execution of faang.py on a fixed cadence.
+## Objective
+Automate execution of `faang.py` on a fixed cadence while maintaining reproducibility, transparency, and reviewer‑friendly outputs.  A time of 08.08 UTC every Saturday has been chosen to avoid market open/close times and reduce rate‑limit issues.
 
-### What it does
-- Provides scheduled workflow (.github/workflows/faang.yml).
-- Commits updated CSVs and plots to repository.
-- Produces clear, auditable commit history.
+## Workflows
 
-### GitHub Actions Workflow
-- The automation pipeline is defined in `.github/workflows/faang.yml`.  
-- This file documents triggers, environment setup, dependency installation, diagnostics, script execution, and commit/push steps.
+### FAANG Automation Workflow
+- **File:** `.github/workflows/faang.yml`
+- **Purpose:** Runs `faang.py` weekly to generate updated datasets and plots.
+- **Process:**  
+  - Triggered on a scheduled cadence.  
+  - Sets up environment, installs dependencies, and runs diagnostics.  
+  - Executes `faang.py` and commits results back to the repository.  
+- **Outputs:**  
+  - New CSVs saved in `data/` with UTC‑timestamped filenames.  
+  - New plots saved in `plots/` with UTC‑timestamped filenames.  
+  - Weekly commits ensure reproducibility and a clear audit trail.  
+- **Logs:**  
+  - Each run produces detailed logs in the **Actions** tab.  
+  - Reviewers can verify environment setup, script execution, and commit history directly.
 
-### Workflow Logs
-- Each automated run produces detailed logs in the GitHub Actions dashboard.  
-- Reviewers can verify environment diagnostics, script execution, and commit history directly from these logs.
-- Logs can be accessed via the Actions tab in GitHub, under the FAANG Automation Workflow runs.
+### Practice Workflow
+- **File:** `.github/workflows/github-actions-practice.yml`
+- **Purpose:** Lightweight sandbox to test GitHub Actions functionality before deploying the full FAANG pipeline.
+- **Process:**  
+  - Triggered on **push events**.  
+  - Executes a simple job that lists repository files.  
+- **Benefits:**  
+  - Safe experimentation without affecting the FAANG workflow.  
+  - Confirms workflow triggers and syntax correctness.  
+  - Serves as a reference for future workflow development.  
+- **Reviewer Note:** Not part of formal assessment tasks, but runs can be checked in the **Actions** tab.
 
-### Automated Outputs
-- New CSVs are saved into `data/` with UTC‑timestamped filenames.  
-- Plots are saved into `plots/` with UTC‑timestamped filenames.  
-- Both are committed weekly by the GitHub Actions workflow, ensuring reproducibility and transparency.
-
-### Why it’s useful 
-Ensures outputs remain fresh and reproducible without manual intervention.
-
-### Reviewer guidance
-- Workflow is conservative; runs weekly by default.
-- Commit history documents updates transparently.
-
-### References
-- [GitHub Actions documentation](https://docs.github.com/en/actions)
-
----
-
-## GitHub Actions Practice Workflow
-
-### Objective  
-Provide an initial, lightweight workflow to practice GitHub Actions functionality before implementing the full FAANG automation pipeline.
-
-### What it does  
-- Defines a simple workflow in `.github/workflows/github-actions-practice.yml`.  
-- Triggered on **push events**.  
-- Executes a job that lists all files in the repository.  
-- Serves as a sandbox for testing workflow syntax and GitHub Actions basics.  
-
-### Why it’s useful  
-*Allows safe experimentation with GitHub Actions without affecting the main FAANG automation workflow.*  
-- Helps confirm that workflows trigger correctly on repository events.  
-- Provides a quick way to verify repository contents.  
-- Remains in the repository as a reference for future workflow development.  
-
-### Reviewer guidance  
-- This file is **not part of the formal assessment tasks** but demonstrates initial practice with GitHub Actions.  
-- Reviewers can check the Actions tab for runs of this workflow to confirm push triggers and file listings.  
-
-### References  
-- [GitHub Actions Quickstart](https://docs.github.com/en/actions/quickstart)  
-- [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)  
-
-
-### Follow Up to ensure Step 4 worked correctly
-- After the scheduled date to run the FAANG Automation Workflow, I verified that it executed successfully by checking the GitHub Actions logs:
-- I clicked into the 'Actions' tab in my GitHub repository to see the workflow runs.
-- I clicked on the latest run of the 'FAANG Automation Workflow' to view detailed logs
-- I reviewed the logs to confirm that the workflow executed successfully, checking for any errors or warnings.
-- I verified that new CSV files were created in the 'data/' folder and new plot images in the 'plots/' folder, with appropriate UTC-timestamped filenames.
-- A new CSV file and plot image were committed to the repository, confirming that the automation worked as intended.  I performed a git status and git pull to ensure my local repository was up to date with the latest changes from the remote repository.
-
----
+## Verification
+After the scheduled FAANG workflow run:
+- Checked the **Actions** tab for successful execution.  
+- Reviewed logs for errors or warnings.  
+- Confirmed new CSVs and plots with UTC‑timestamped filenames in `data/` and `plots/`.  
+- Verified commits were pushed to the repository.  
+- Ran `git status` and `git pull` locally to sync with remote changes.
 
 ## Local Repository Sync
-Before making local changes, run `git status` and `git pull` to ensure your branch is up to date.  
-This prevents conflicts with automated commits pushed by the workflow and maintains a clean audit trail.
-
+Before making local changes, always run:
+```bash
+git status
+git pull
+```
 ---
 
 ### 📌 Requirements Compliance Checklist

@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} triggered FAANG automation 🚀
 
 on:
   schedule:
-    - cron: "0 9 * * 6"   # Every Saturday at 09:00 UTC
+    - cron: "8 8 * * 6"   # Every Saturday at 08:08 UTC
   workflow_dispatch:       # Allow manual runs for testing
 
 permissions:
