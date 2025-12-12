@@ -528,7 +528,8 @@ Summarise the notebook’s workflow and reproducibility practices.
 
 ### Acknowledgements
 
-Copilot was used to assist with code generation and suggestions throughout this project.
+- **AI Assistance:**  
+  Microsoft Copilot was used throughout the project to refine documentation, structure sections, and ensure clarity in presenting results and limitations. Copilot’s support helped strengthen transparency and alignment with assessment criteria.
 
 ---
 
