@@ -162,9 +162,9 @@ This repository is designed for:
 
 ## Helper Functions and Modular Design
 
-This project uses a set of modular helper functions defined directly within the notebook (`problems.ipynb`) and script (`faang.py`). While these functions are not stored in a separate helper file (like `utils.py`), they are structured and reused in a way that mirrors the benefits of a modular helper module.
+This project implements modular helper functions directly within the notebook (problems.ipynb) and script (faang.py). Although these functions are not placed in a separate helper file such as utils.py, their structure and reuse provide the advantages typically associated with a modular helper module.
 
-By adapting the logic into reusable functions within the main files, the project maintains clean separation of concerns, avoids code duplication, and supports both interactive and automated workflows — all without requiring external imports.
+Adapting logic into reusable functions within the main files ensures a clear separation of concerns, minimizes code duplication, and supports both interactive and automated workflows without the need for external imports.
 
 ### Functions Used in This Project
 
@@ -183,12 +183,12 @@ Additional functions, such as `plot_close_prices(data, output_dir)`, are impleme
 | `describe_data(df)` | Generates summary statistics for numeric columns. | Provides quick insight into ranges, averages, and volatility. | [pandas.DataFrame.describe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html) |
 | `add_returns_and_rolling(df)` | Adds derived columns: percentage returns and 30‑period rolling mean. | Supports optional analysis (return histograms, boxplots, rolling averages). | [pandas.DataFrame.pct_change](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pct_change.html) |
 
-> ℹ️ Note: In the notebook, plotting is handled by 'plot_data()' (Step 7). In the script (faang.py), plotting is modularised into plot_close_prices(data, output_dir) for automation. Optional enrichments (returns, rolling mean, correlation heatmap) are demonstrated in later notebook steps but are not required for the core assessment tasks.
+In the notebook, plotting is managed by the plot_data() function (Step 7). In the script (faang.py), plotting is modularized into plot_close_prices(data, output_dir) to facilitate automation. Optional enhancements, such as returns, rolling mean, and correlation heatmap, are demonstrated in subsequent notebook steps but are not required for the core assessment tasks.
 
 ---
 
 ### Why this matters
-This project demonstrates reproducible workflows for FAANG stock analysis, aligning with module assessment requirements. By documenting inputs, alignment choices, and diagnostics, it ensures transparency for reviewers and provides a clear learning resource for students.”
+This project demonstrates reproducible workflows for FAANG stock analysis in accordance with module assessment requirements. Documenting inputs, alignment choices, and diagnostics ensures transparency for reviewers and offers a clear learning resource for students.
 
 ### References  
 - [Real Python – Python Modules and Packages](https://realpython.com/python-modules-packages/)  
@@ -200,25 +200,25 @@ This project demonstrates reproducible workflows for FAANG stock analysis, align
 
 ---
 
-## Problem 1 — Fetch Hourly FAANG Data
+## Problem 1: Retrieval of Hourly FAANG Data
 
-### Objective  
-Download hourly OHLCV data for META, AAPL, AMZN, NFLX, and GOOG covering the last 5 trading sessions, and save timestamped CSVs.
+### Objective
+Obtain hourly OHLCV data for META, AAPL, AMZN, NFLX, and GOOG for the five most recent trading sessions, and store the results as timestamped CSV files
 
-### What it does  
-- Uses `yfinance` to fetch hourly data.  
-- Aligns each ticker’s data with `Date` as datetime index.  
-- Saves outputs into `data/` folder with filenames `TICKER_YYYYMMDD-HHmmss.csv` (UTC).  
+### Purpose
+- Utilises the yfinance library to retrieve hourly OHLCV data for each ticker independently.
+- Stores all tickers together in a single CSV file, with a Ticker column identifying each series.
+- Saves output files in the data/ directory using the format YYYYMMDD-HHmmss.csv (UTC)
 
-### Why it’s useful  
-*Provides reproducible, timestamped datasets for analysis and comparison.*  
-- Guarantees reviewers can trace plots and statistics back to exact input files.  
-- Prevents ambiguity around weekends or market holidays by explicitly saving the last available trading session.  
+### Function
+Enables reproducible and timestamped datasets suitable for subsequent analysis and comparison.
+- Ensures that reviewers can trace plots and statistical results directly to the corresponding input files.
+- Eliminates ambiguity related to weekends or market holidays by explicitly saving data from the most recent available trading session
 
-### Reviewer guidance  
-- Diagnostics print shape and time range before saving.  
-- Filenames are lexicographically sortable for deterministic “latest file” selection.  
-- If no overlapping timestamps are found, consider outer joins with documented NaN handling.  
+### Reviewer Note
+- Diagnostic outputs display the data shape and time range prior to saving.
+- Filenames are lexicographically sortable, ensuring deterministic selection of the most recent dataset.
+- Alignment of timestamps (inner/outer joins) is performed in later analysis steps, not during data retrieval.
 
 ### References  
 - [yfinance documentation](https://pypi.org/project/yfinance/)  
@@ -229,47 +229,45 @@ Download hourly OHLCV data for META, AAPL, AMZN, NFLX, and GOOG covering the las
 
 ## Problem 2 — Plot Closing Prices
 
-### Objective  
-Load the latest saved CSV for each ticker and plot hourly Close prices on a single chart.
+### Objective
+Load the most recent CSV file containing all FAANG tickers and plot the hourly closing prices on a single chart.
 
-### What it does  
-- Uses `load_latest_csvs()` helper to select the most recent file per ticker.  
-- Plots all five Close price series on a shared timeline with axis labels, legend, and date‑range title.  
-- Saves plots to `plots/` with filenames `faang_close_YYYYMMDD-HHmmss.png` (UTC).  
-- Supports a stable filename `faang_close.png` when `NO_DATE_PLOTS=True` (useful for README embedding).  
+### Purpose
+- Utilise the load_latest_data() helper function to select and load the most recent timestamped CSV file from the data/ directory.
+- Plot all five closing price series on a shared timeline, including axis labels, a legend, and a title showing the last available trading date.
+- Save plots in the plots/ directory using filenames formatted as YYYYMMDD-HHmmss.png (UTC).
+- Support a stable filename, faang_close.png, when NO_DATE_PLOTS is set to True (useful for embedding in README files).
 
-### Why it’s useful  
-*Provides a clear visual comparison of FAANG hourly closes over the last five trading days.*  
+### Function
+Enable clear visual comparison of FAANG hourly closing prices over the most recent five trading days.
 
-### Reviewer guidance  
-- Titles explicitly display the last available trading session to avoid weekend/holiday ambiguity.  
-- Saved plots are timestamped for reproducibility.
-
-### Output File
-![Example Plot](plots/20251203-120256.png)
+### Reviewer Note
+- Ensure that titles explicitly display the last available trading session to avoid ambiguity around weekends or holidays.
+- Timestamp saved plots to support reproducibility and traceability.
 
 ### References  
-- [Matplotlib documentation](https://matplotlib.org/stable/contents.html)  
-- [pandas timeseries guide](https://pandas.pydata.org/docs/user_guide/timeseries.html)  
+- [matplotlib documentation](https://matplotlib.org/stable/contents.html)
+- [Pandas - timeseries guide](https://pandas.pydata.org/docs/user_guide/timeseries.html)
 
 ---
 
-## Problem 3 — CLI Script (`faang.py`)
+## Problem 3 — CLI Script (faang.py)
 
-### Objective  
-Encapsulate notebook logic into a standalone script for repeatable execution.
+### Objective
+Encapsulates notebook logic within a standalone script to enable repeatable execution.
 
-### What it does  
-- Replicates notebook functions in `faang.py`.  
-- Supports CLI flags (`--plot`, `--overwrite`, `--show`).  
-- Saves outputs into `data/` and `plots/` folders with timestamped filenames.  
+### Function
+- Implements the notebook's functions within faang.py.
+- Supports command-line interface (CLI) flags, including --plot, --overwrite, and --show.
+- Saves outputs to the data and plots directories, appending timestamped filenames.
+- The script mirrors the notebook’s behaviour but does not require a Jupyter environment, making it suitable for batch execution or integration into automated workflows.
 
-### Why it’s useful  
-*Enables reproducible automation outside Jupyter, with flexible command‑line execution.*  
+### Purpose
+- Facilitates reproducible automation outside of Jupyter environments and allows flexible command-line execution.
 
-### Reviewer guidance  
-- Documented usage and functionality in README.  
-- Tested in both terminal and GitHub Codespaces environments.  
+### Reviewer Note
+- Usage instructions and functionality are documented in the README file.
+- The script has been tested in both terminal and GitHub Codespaces environments.
 
 ### References  
 - [argparse documentation](https://docs.python.org/3/library/argparse.html)  
@@ -279,42 +277,42 @@ Encapsulate notebook logic into a standalone script for repeatable execution.
 # Problem 4: Automation with GitHub Actions
 
 ## Objective
-Automate execution of `faang.py` on a fixed cadence while maintaining reproducibility, transparency, and reviewer‑friendly outputs.  A time of 08.08 UTC every Saturday has been chosen to avoid market open/close times and reduce rate‑limit issues.
+The execution of 'faang.py' is automated on a fixed schedule to ensure reproducibility, transparency, and outputs that facilitate reviewer assessment. The workflow is scheduled for 08:08 UTC every Saturday to avoid market open and close times and to minimize rate-limit issues.
 
 ## Workflows
 
 ### FAANG Automation Workflow
 - **File:** `.github/workflows/faang.yml`
-- **Purpose:** Runs `faang.py` weekly to generate updated datasets and plots.
+- **Purpose:** Executes  `faang.py` on a weekly basis to generate updated datasets and plots.
 - **Process:**  
   - Triggered on a scheduled cadence.  
-  - Sets up environment, installs dependencies, and runs diagnostics.  
-  - Executes `faang.py` and commits results back to the repository.  
+  - Sets up the environment, installs dependencies, and runs diagnostics.  
+  - Executes `faang.py` and commits the resulting outputs to the repository.  
 - **Outputs:**  
   - New CSVs saved in `data/` with UTC‑timestamped filenames.  
   - New plots saved in `plots/` with UTC‑timestamped filenames.  
-  - Weekly commits ensure reproducibility and a clear audit trail.  
+  - Weekly commits support reproducibility and provide a transparent audit trail.  
 - **Logs:**  
   - Each run produces detailed logs in the **Actions** tab.  
-  - Reviewers can verify environment setup, script execution, and commit history directly.
+  - Reviewers are able to verify the environment setup, script execution, and commit history directly.
 
 ### Practice Workflow
 - **File:** `.github/workflows/github-actions-practice.yml`
-- **Purpose:** Lightweight sandbox to test GitHub Actions functionality before deploying the full FAANG pipeline.
+- **Purpose:** Provides a lightweight sandbox for testing GitHub Actions functionality prior to deploying the full FAANG pipeline.
 - **Process:**  
   - Triggered on **push events**.  
-  - Executes a simple job that lists repository files.  
+  - Executes a basic job to list repository files. 
 - **Benefits:**  
   - Safe experimentation without affecting the FAANG workflow.  
   - Confirms workflow triggers and syntax correctness.  
   - Serves as a reference for future workflow development.  
-- **Reviewer Note:** Not part of formal assessment tasks, but runs can be checked in the **Actions** tab.
+- **Reviewer Note:** : This workflow is not included in formal assessment tasks; however, its runs are available for review in the **Actions** tab.
 
 ## Verification
-After the scheduled FAANG workflow run:
+Following the scheduled FAANG workflow execution:
 - Checked the **Actions** tab for successful execution.  
 - Reviewed logs for errors or warnings.  
-- Confirmed new CSVs and plots with UTC‑timestamped filenames in `data/` and `plots/`.  
+- Confirmed the presence of new CSV files and plots with UTC-timestamped filenames in the data and plots directories.  
 - Verified commits were pushed to the repository.  
 - Ran `git status` and `git pull` locally to sync with remote changes.
 
@@ -332,41 +330,39 @@ This section confirms that the notebook and repository meet the assessment requi
 
 ---
 
-**Problem 1: Data from yfinance**
+#### Problem 1: Data from yfinance
 - ✔ Function `get_data()` defined  
 - ✔ Downloads **hourly OHLCV data** for the last 5 trading days  
 - ✔ Covers FAANG tickers: META, AAPL, AMZN, NFLX, GOOG  
 - ✔ Saves data into `data/` folder  
-- ✔ Filenames follow format `TICKER_YYYYMMDD-HHmmss.csv` (UTC)  
+- ✔ Filenames follow format YYYYMMDD-HHmmss.csv (UTC), containing all tickers in one file.
 - ✔ Creates `data/` folder automatically if missing  
 
 ---
 
-**Problem 2: Plotting Data**
+#### Problem 2: Plotting Data
 - ✔ Function `plot_data()` defined  
 - ✔ Opens latest CSV file in `data/`  
 - ✔ Plots hourly `Close` prices for all FAANG tickers on one chart  
 - ✔ Adds axis labels, legend, and title with last available trading date  
-- ✔ Saves plot into `plots/` folder with timestamped filename `faang_close_YYYYMMDD-HHmmss.png`  
-- ✔ Creates `plots/` folder automatically if missing  
+- ✔ Saves plot into plots/ with timestamped filename YYYYMMDD-HHmmss.png
+- ✔ Creates plots/ folder automatically if missing  
 - ✔ Displays plot inline in the notebook  
-
-**Clarification:**  
-All plotted values are **hourly closes**, not daily closes. Each point reflects the end of a one‑hour trading interval, exactly as required by the assignment.
 
 ---
 
-**Problem 3: CLI Script (`faang.py`)**
+#### Problem 3: CLI Script (`faang.py`) 
 - ✔ Script `faang.py` created replicating notebook logic  
 - ✔ Supports flags: `--plot`, `--overwrite`, `--show`  
-- ✔ Saves timestamped CSVs into `data/` and plots into `plots/`  
+- ✔ Saves timestamped CSVs into `data/` and plots into `plots/`
+- ✔ Supports stable filename faang_close.png when NO_DATE_PLOTS=True 
 - ✔ Provides deterministic “latest file” selection via lexicographic sort  
 - ✔ Includes inline documentation and usage notes for reviewers  
 - ✔ Tested in terminal and Codespaces environments  
 
 ---
 
-**Problem 4: Automation with GitHub Actions**
+#### Problem 4: Automation with GitHub Actions
 - ✔ Workflow file `.github/workflows/faang.yml` defined  
 - ✔ Automates execution of `faang.py` on a fixed cadence (weekly by default)  
 - ✔ Commits updated CSVs and plots to repository  
@@ -375,149 +371,153 @@ All plotted values are **hourly closes**, not daily closes. Each point reflects 
 
 ---
 
-**Overall Compliance Notes**
-- ✔ All problems (1–4) implemented with reproducibility and transparency in mind  
-- ✔ Diagnostics (shapes, ranges, co‑observation counts) printed before key computations  
-- ✔ Helper functions and Markdown explanation blocks document design choices and reviewer considerations  
+#### Summary of Compliance
+- All problems (1–4) have been implemented with a focus on reproducibility and transparency.
+- Diagnostics, including shapes, ranges, and co-observation counts, are printed before key computations.
+- Helper functions and Markdown explanation blocks are provided to document design choices and considerations for reviewers.
 
 ---
 
 ## Extended Visualisations (Steps 8a to 8e)
 
-These optional, display‑only cells build on the Problem 1–4 workflow to provide deeper analysis and exploratory plots.
+These optional, display-only cells extend the Problem 1–4 workflow by offering deeper analysis and additional exploratory visualizations.
 
 ---
 
-### Step 8a — Return Distributions
+## Step 8a — Return Distributions
 
-**Objective**  
-Plot histograms and kernel density estimates (KDEs) of hourly returns for each ticker.
+### Objective
+Generate histograms and kernel density estimates (KDEs) of hourly returns for each ticker.
 
-**What it does**  
-- Computes synchronous hourly returns from aligned Close prices.  
-- Plots histograms with overlaid KDE curves.  
+### Purpose
+-  Calculates synchronous hourly returns using aligned Close prices.
+-  Displays histograms with overlaid KDE curves.
 
-**Why it’s useful**  
-*Highlights distribution shape, skewness, and volatility across FAANG tickers.*  
+### Function
+- Illustrates the distribution shape, skewness, and volatility for each FAANG ticker.
 
-**Reviewer guidance**  
-- Ensure returns are computed after alignment to avoid spurious distributions.  
+### Reviewer Note
+- Verify that returns are calculated after alignment to prevent inaccurate distributions.
 
-**References**  
-- [seaborn histplot](https://seaborn.pydata.org/generated/seaborn.histplot.html)  
+### References
 
----
-
-### Step 8b — Pairwise Scatterplot Matrix
-
-**Objective**  
-Visualise pairwise relationships between synchronous returns.
-
-**What it does**  
-- Uses `seaborn.pairplot` to plot scatterplots for each ticker pair.  
-- Diagonal plots show KDEs of individual return distributions.  
-
-**Why it’s useful**  
-*Reveals linear/non‑linear relationships and potential outliers.*  
-
-**Reviewer guidance**  
-- Confirm alignment diagnostics before plotting.  
-
-**References**  
-- [seaborn pairplot](https://seaborn.pydata.org/generated/seaborn.pairplot.html)  
+- [seaborn histplot](https://seaborn.pydata.org/generated/seaborn.histplot.html)
 
 ---
 
-### Step 8c — Correlation Analysis
+## Step 8b — Pairwise Scatterplot Matrix
 
-**Objective**  
-Compute and visualise Pearson correlations on synchronous returns.
+### Objective
+Visualise pairwise relationships among synchronous returns.
 
-**What it does**  
-- Aligns tickers with inner join.  
-- Computes correlation matrix with `returns.corr()`.  
-- Displays annotated heatmap.  
+### Purpose
+-  Utilises 'seaborn.pairplot' to generate scatterplots for each ticker pair.
+- Diagonal plots display KDEs for individual return distributions.
 
-**Why it’s useful**  
-*Shows strength and direction of co‑movement between FAANG tickers.*  
+### Function
+Identifies linear and non-linear relationships as well as potential outliers.
 
-**Reviewer guidance**  
-- Diagnostics print sample size and time range.  
-- Inner join ensures correlations reflect truly co‑observed hours.  
+### Reviewer Note
+- Confirm that alignment diagnostics are complete before generating plots.
 
-**References**  
-- [Pearson correlation coefficient overview](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)  
-- [seaborn heatmap](https://seaborn.pydata.org/generated/seaborn.heatmap.html)  
+### References
+
+- [seaborn pairplot](https://seaborn.pydata.org/generated/seaborn.pairplot.html)
 
 ---
 
-### Step 8d — Cumulative Returns vs Benchmark
+## Step 8c — Correlation Analysis
 
-**Objective**  
-Plot cumulative returns for each ticker against an equal‑weight FAANG benchmark.
+### Objective
+Compute and visualise Pearson correlations for synchronous returns.
 
-**What it does**  
-- Builds aligned price matrix.  
-- Computes synchronous returns and equal‑weight benchmark.  
-- Plots cumulative returns `(1 + r).cumprod() - 1`.  
+### Purpose
+- Aligns tickers using an inner join.
+- Calculates the correlation matrix using returns.corr().
+- Displays an annotated heatmap of the results.
 
-**Why it’s useful**  
-*Highlights relative outperformance vs a simple portfolio proxy.*  
+### Function
+Indicates the strength and direction of co-movement among FAANG tickers.
 
-**Reviewer guidance**  
-- Diagnostics print aligned shape and time range.  
-- Optional log scale can be enabled for growth rate comparison.  
+### Reviewer Note
+- Diagnostics display the sample size and time range.
+- The inner join ensures that correlations reflect only truly co-observed hours.
 
-**References**  
-- [Cumulative return overview](https://www.investopedia.com/terms/c/cumulative-return.asp)  
-- [Matplotlib plotting](https://matplotlib.org/stable/contents.html)  
+### References
 
----
-
-### Step 8e — Rolling Average Plots
-
-**Objective**  
-Plot hourly Close prices alongside a 30‑period rolling average.
-
-**What it does**  
-- Reads each ticker’s DataFrame from Step 1.  
-- Uses existing `RollingMean` column or computes in‑memory 30‑period SMA.  
-- Plots Close vs rolling average.  
-
-**Why it’s useful**  
-*Smooths short‑term fluctuations to reveal longer‑term trends.*  
-
-**Reviewer guidance**  
-- Plots are exploratory only; they do not modify saved CSVs.  
-- Adjust rolling window if needed for different smoothing levels.  
-
-**References**  
-- [pandas rolling](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html)  
-- [Moving averages overview (Investopedia)](https://www.investopedia.com/terms/m/movingaverage.asp)  
+- [Pearson correlation coefficient overview](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)
+- [seaborn heatmap](https://seaborn.pydata.org/generated/seaborn.heatmap.html)
 
 ---
 
-## Step 9 — Workflow Documentation
+## Step 8d — Cumulative Returns vs Benchmark
 
-### Objective  
-Summarise the notebook’s workflow and reproducibility practices.
+### Objective
+Plot cumulative returns for each ticker compared to an equal-weight FAANG benchmark.
 
-### Workflow demonstrated  
-1. Fetch hourly FAANG data  
-2. Load and validate downloads  
-3. Preview and summarise datasets  
-4. Plot closing prices  
-5. Extended visualisations (returns, rolling means, histograms, boxplots, pairplots)  
-6. Correlation analysis on synchronous returns  
-7. Comparative performance vs benchmark  
-8. Notebook‑level documentation and references  
+### Purpose
+- Constructs an aligned price matrix.
+- Calculates synchronous returns and the equal-weight benchmark.
+- Plots cumulative returns using (1 + r).cumprod() - 1.
 
-### Why it’s useful  
-*Provides a clear roadmap of the analysis pipeline and ensures transparency for reviewers.*  
+### Function
+Highlights relative outperformance compared to a simple portfolio proxy.
 
-### Reviewer guidance  
-- Each step documents inputs, alignment choices, and imputation.  
-- Diagnostics (shapes, time ranges, co‑observation counts) are printed before key computations.  
+### Reviewer Note
+- Diagnostics display the aligned shape and time range.
+- You can enable an optional log scale to compare growth rates.
+
+### References
+- [Cumulative return overview](https://www.investopedia.com/terms/c/cumulative_return.asp)
+- [Matplotlib plotting](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html)
+
+---
+
+## Step 8e — Rolling Average Plots
+
+### Objective
+Plot hourly Close prices together with a 30-period rolling average.
+
+### Purpose
+- Retrieves each ticker’s DataFrame from Step 1.
+- Uses the existing RollingMean column or computes a 30-period simple moving average in memory.
+- Plots Close prices against the rolling average.
+
+### Function
+Reduces short-term fluctuations to reveal longer-term trends.
+
+### Reviewer Note
+- These plots are for exploratory purposes only and do not modify saved CSV files.
+- Adjust the rolling window as needed to achieve different levels of smoothing.
+
+### References
+- [pandas rolling](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.rolling.html)
+- [Moving averages overview (Investopedia)](https://www.investopedia.com/terms/m/movingaverage.asp)
+
+---
+
+## Step 9: Workflow Documentation
+
+### Objective
+Summarise the workflow and reproducibility practices implemented within the notebook.
+
+### Workflow demonstrated
+
+1. Fetch hourly FAANG data
+2. Load and validate downloads
+3. Preview and summarise datasets
+4. Plot closing prices
+5. Generate extended visualizations, including returns, rolling means, histograms, boxplots, and pairplots.
+6. Correlation analysis on synchronous returns
+7. Comparative performance vs benchmark
+8. Notebook‑level documentation and references
+
+### Purpose
+This documentation offers a clear overview of the analysis pipeline and promotes transparency for reviewers.
+
+### Reviewer guidance
+- Each step details the inputs, alignment decisions, and imputation methods applied.
+- Diagnostics, such as data shapes, time ranges, and co-observation counts, are displayed prior to key computations.
 
 ### References  
 - [pandas User Guide](https://pandas.pydata.org/docs/user_guide/index.html)  
@@ -531,13 +531,15 @@ Summarise the notebook’s workflow and reproducibility practices.
 - **AI Assistance:**  
   Microsoft Copilot was used throughout the project to refine documentation, structure sections, and ensure clarity in presenting results and limitations. Copilot’s support helped strengthen transparency and alignment with assessment criteria.
 
+  - **Grammarily Editor** was used to proofread and enhance the readability of documentation sections.
+
 ---
 
-### Personal Reflection
+## Personal Reflection
 
-This project reinforced the importance of writing clean, concise, and reproducible code. Copilot assisted with code generation, but outputs were simplified and refined for clarity. By focusing on transparency, diagnostics, and reviewer guidance, the final workflow is both efficient and easy to understand.
+Working on this project deepened my appreciation for writing code that is not just functional, but also clean, concise, and reproducible. While Copilot offered helpful code suggestions, I took care to distil and polish the results for maximum clarity. Prioritising transparency, thorough diagnostics, and clear guidance for reviewers transformed the workflow into a streamlined process that anyone can follow with ease.
 
-I found the automation section particularly challenging at first, as the workflow initially only saved the files in memory rather than committing them to the repository. To overcome this, I reverted to practicing with the **GitHub Actions Practice Workflow**, which provided a simpler environment to test triggers and outputs. Once this practice workflow was running correctly, I built on it step by step, researching various aspects of GitHub Actions until the full automation pipeline worked as intended. This iterative approach highlighted the value of experimentation, incremental learning, and persistence when tackling new infrastructure tasks.
+The automation section proved to be a real puzzle at first, since the workflow stubbornly kept files in memory instead of committing them to the repository. To crack this, I returned to basics with the GitHub Actions Practice Workflow, a simpler playground for testing triggers and outputs. As I got this practice flow humming, I layered on new features one at a time, diving into GitHub Actions documentation and experimenting until the full automation pipeline finally clicked. This hands-on, stepwise process underscored just how powerful experimentation, steady learning, and persistence can be when facing unfamiliar infrastructure challenges.
 
 During early runs of the automation workflow, I repeatedly encountered the following error messages:
 
@@ -551,8 +553,8 @@ $AAPL: possibly delisted; no price data found (period=5d) ...
 🚫 No data file saved. Exiting.
 ```
 
-These failures occurred because the workflow environment was not correctly configured to fetch live ticker data, causing `yfinance` to return empty responses. After reviewing the `.yml` configuration and researching how GitHub Actions handles Python environments and dependencies, I corrected the workflow by ensuring proper installation of requirements, stable internet access within the job, and explicit version pins for reproducibility. Once these adjustments were made, the workflow successfully fetched and saved FAANG data, producing valid CSVs and plots.  
+These errors stemmed from a misconfigured workflow environment that could not fetch live ticker data, leaving yfinance with nothing to return. Digging into the .yml setup and exploring how GitHub Actions manages Python environments and dependencies, I methodically fixed the issues: installing the right requirements, guaranteeing internet access during the job, and pinning versions for consistency. With these tweaks in place, the workflow finally pulled in and saved FAANG data, generating real CSVs and plots.
 
-This experience taught me the importance of diagnosing environment-specific issues in CI/CD pipelines and reinforced the need for clear logging, incremental testing, and fallback practice workflows to build confidence before tackling more complex automation tasks.
+This experience drove home the importance of troubleshooting environment-specific quirks in CI/CD pipelines. It also reinforced how vital clear logging, step-by-step testing, and fallback practice workflows are for building confidence before taking on more advanced automation.
 
 ### END
